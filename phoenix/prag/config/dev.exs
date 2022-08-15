@@ -26,7 +26,9 @@ config :prag, PragWeb.Endpoint,
   secret_key_base: "Ay3wDJaFq9ltYTmE05fZyh5yMxRvmevGgsG58GV1RMCGlXknCGvJL9Uv/dJqvtfC",
   watchers: [
     # Start the esbuild watcher by calling Esbuild.install_and_run(:default, args)
-    esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]}
+    esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]},
+    # Enable watcher in development
+    tailwind: {Tailwind, :install_and_run, [:default, ~w(--watch)]}
   ]
 
 # ## SSL Support
