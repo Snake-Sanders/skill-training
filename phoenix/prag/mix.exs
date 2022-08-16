@@ -50,7 +50,8 @@ defmodule Prag.MixProject do
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
       {:tailwind, "~> 0.1.6", runtime: Mix.env() == :dev},
-      {:dart_sass, "~> 0.5", runtime: Mix.env() == :dev}
+      {:dart_sass, "~> 0.5", runtime: Mix.env() == :dev},
+      {:number, "~> 1.0"}
     ]
   end
 
