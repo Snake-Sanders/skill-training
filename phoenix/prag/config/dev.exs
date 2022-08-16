@@ -28,7 +28,9 @@ config :prag, PragWeb.Endpoint,
     # Start the esbuild watcher by calling Esbuild.install_and_run(:default, args)
     esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]},
     # Enable watcher in development
-    tailwind: {Tailwind, :install_and_run, [:default, ~w(--watch)]}
+    tailwind: {Tailwind, :install_and_run, [:default, ~w(--watch)]},
+    # check for changes in sass files
+    sass: {DartSass, :install_and_run, [:default, ~w(--watch)]}
   ]
 
 # ## SSL Support

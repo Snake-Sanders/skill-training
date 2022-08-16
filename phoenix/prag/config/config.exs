@@ -47,15 +47,35 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
+# Style pipeline
+# The output of DartSass is used as the input to the Tailwind CLI.
+# That’ll be the second stage of the CSS build process.
+
+# 1st stage:
+# This uses your assets/css/app.scss as the input file and drops the compiled
+# CSS into the priv/static/assets/app.tailwind.css file. That’ll be the first
+# stage of the CSS build process.
+config :dart_sass,
+  version: "1.49.11",
+  default: [
+    args: ~w(css/app.scss ../priv/static/assets/app.tailwind.css),
+    cd: Path.expand("../assets", __DIR__)
+  ]
+
+# 2nd stage:
+# Uses the intermediate priv/static/assets/app.tailwind.css file as its input
+# and spit out the final CSS in /priv/static/assets/app.css.
 # Use TailwindCss for style https://tailwindcss.com/docs/guides/phoenix
-config :tailwind, version: "3.1.8", default: [
-  args: ~w(
+config :tailwind,
+  version: "3.1.8",
+  default: [
+    args: ~w(
     --config=tailwind.config.js
-    --input=css/app.css
+    --input=../priv/static/assets/app.tailwind.css
     --output=../priv/static/assets/app.css
   ),
-  cd: Path.expand("../assets", __DIR__)
-]
+    cd: Path.expand("../assets", __DIR__)
+  ]
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
