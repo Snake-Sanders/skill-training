@@ -18,9 +18,11 @@ defmodule PragWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
+    get "/sales", SalesController, :index
 
     live "/light", LightLive
     live "/license", LicenseLive
+    live "/sales-dashboard", SalesDashboardLive
   end
 
   # Other scopes may use custom stacks.

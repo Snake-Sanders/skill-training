@@ -1,0 +1,7 @@
+<h1>Sales Stuff</h1>
+
+<h2>Top Sellers</h2>
+
+<h2>Recent Orders</h2>
+
+<%= live_render(@conn, PragWeb.SalesDashboardLive) %>
