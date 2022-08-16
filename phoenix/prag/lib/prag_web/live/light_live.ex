@@ -2,7 +2,7 @@ defmodule PragWeb.LightLive do
   use PragWeb, :live_view
 
   def mount(_params, _session, socket) do
-    socket = assign(socket, :brightness, 10)
+    socket = assign(socket, brightness: 10, power_level: 10 )
     {:ok, socket}
   end
 
@@ -35,6 +35,10 @@ defmodule PragWeb.LightLive do
       <button phx-click="random">
         <span>Light Me Up!</span>
       </button>
+
+      <form phx-change="power">
+        <input type="range" name="power-level" min="0" max="100" value={"#{@brightness}"}/>
+      </form>
     </div>
     """
   end
@@ -61,6 +65,12 @@ defmodule PragWeb.LightLive do
 
   def handle_event("random", _, socket) do
     socket = assign(socket, :brightness, Enum.random(0..100))
+    {:noreply, socket}
+  end
+
+  def handle_event("power", %{"power-level" => power}, socket) do
+    power = String.to_integer(power)
+    socket = assign(socket, :brightness, power )
     {:noreply, socket}
   end
 end
