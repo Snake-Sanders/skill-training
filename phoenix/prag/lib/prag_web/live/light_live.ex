@@ -2,7 +2,7 @@ defmodule PragWeb.LightLive do
   use PragWeb, :live_view
 
   def mount(_params, _session, socket) do
-    socket = assign(socket, brightness: 10)
+    socket = assign(socket, brightness: 10, meter_color: 3000)
     {:ok, socket}
   end
 
@@ -11,7 +11,7 @@ defmodule PragWeb.LightLive do
     <h1>Front Porch Light</h1>
     <div id="light">
       <div class="meter">
-        <span style={"width: #{@brightness}%"}>
+        <span style={"width: #{@brightness}%; background-color: #{temp_color(@meter_color)}"} >
           <%= @brightness %>%
         </span>
       </div>
@@ -39,6 +39,19 @@ defmodule PragWeb.LightLive do
       <form phx-change="power">
         <input type="range" name="power-level" min="0" max="100" value={"#{@brightness}"}/>
       </form>
+
+      <div class="color-temp">
+        <form phx-change="color-temp">
+          <input type="radio" id="3000" name="radio-temp" value="3000" checked={@meter_color == 3000}/>
+          <label for="3000">3000</label>
+
+          <input type="radio" id="4000" name="radio-temp" value="4000" checked={@meter_color == 4000} />
+          <label for="4000">4000</label>
+
+          <input type="radio" id="5000" name="radio-temp" value="5000" checked={@meter_color == 5000} />
+          <label for="5000">5000</label>
+        </form>
+      </div>
     </div>
     """
   end
@@ -73,4 +86,19 @@ defmodule PragWeb.LightLive do
     socket = assign(socket, :brightness, power)
     {:noreply, socket}
   end
+
+  @doc """
+  to match uses the name of the radio input component and capture its value
+  <input type="radio" id="123" name="radio-temp" value="4000" />
+  matches -> value = "4000"
+  """
+  def handle_event("color-temp", %{"radio-temp" => value}, socket) do
+    temp_color = String.to_integer(value)
+    socket = assign(socket, :meter_color, temp_color)
+    {:noreply, socket}
+  end
+
+  defp temp_color(3000), do: "#F1C40D"
+  defp temp_color(4000), do: "#FEFF66"
+  defp temp_color(5000), do: "#99CCFF"
 end
