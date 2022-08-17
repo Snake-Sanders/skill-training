@@ -21,6 +21,7 @@ defmodule PragWeb.Router do
     get "/sales", SalesController, :index
 
     live "/light", LightLive
+    live "/flights", FlightsLive
     live "/license", LicenseLive
     live "/sales-dashboard", SalesDashboardLive
     live "/search", SearchLive
