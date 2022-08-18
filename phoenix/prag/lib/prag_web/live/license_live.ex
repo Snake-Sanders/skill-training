@@ -37,7 +37,7 @@ defmodule PragWeb.LicenseLive do
               <strong><%= @seats %></strong> seats.
             </span>
           </div>
-          <form phx-change="update">
+          <form phx-change="update" phx-debounce="250">
             <input type="range" min="1" max="10"
           name="seats" value={"#{@seats}"} />
           </form>
