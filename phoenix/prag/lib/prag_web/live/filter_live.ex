@@ -3,16 +3,19 @@ defmodule PragWeb.FilterLive do
   alias Prag.Boats
 
   def mount(_params, _session, socket) do
-    socket =
-      assign(socket,
-        boats: Boats.list_boats(),
-        type: "",
-        prices: []
-      )
+    socket = assign_defaults(socket)
 
     # to avoid that these boats are kept in memory we use 'temporary'
     # to delete them right after the template is rendered.
     {:ok, socket, temporary_assigns: [boats: []]}
+  end
+
+  defp assign_defaults(socket) do
+    assign(socket,
+      boats: Boats.list_boats(),
+      type: "",
+      prices: []
+    )
   end
 
   def render(assigns) do
@@ -32,6 +35,11 @@ defmodule PragWeb.FilterLive do
             <%= price_checkbox(price: price, checked: price in @prices) %>
           <% end %>
         </div>
+
+        <%= live_patch "Clear All",
+            to: Routes.live_path(@socket, PragWeb.FilterLive, %{"action" => "clear_all"})
+        %>
+        <a href="#" phx-click="clear">Reset view</a>
       </div>
     </form>
 
@@ -65,6 +73,21 @@ defmodule PragWeb.FilterLive do
     params = [type: type, prices: prices]
     boats = Boats.list_boats(params)
     socket = assign(socket, params ++ [boats: boats])
+    {:noreply, socket}
+  end
+
+  def handle_event("clear", _session, socket) do
+    socket = assign_defaults(socket)
+    {:noreply, socket}
+  end
+
+  def handle_params(params, _uri, socket) do
+    socket =
+      case params do
+        %{"action" => "clear_all"} -> assign_defaults(socket)
+        _ -> socket
+      end
+
     {:noreply, socket}
   end
 
