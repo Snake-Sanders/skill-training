@@ -15,6 +15,7 @@ alias Prag.Repo
 # Boats -> squema, Boat -> module
 alias Prag.Boats.Boat
 alias Prag.Stores.Store
+alias Prag.Flights.Flight
 
 %Boat{
   model: "1760 Retriever Jon Deluxe",
@@ -234,5 +235,86 @@ alias Prag.Stores.Store
   zip: "80204",
   open: true,
   hours: "8am - 10pm M-F"
+}
+|> Repo.insert!()
+
+%Flight{
+  number: "450",
+  origin: "DEN",
+  destination: "ORD",
+  departure_time: Timex.shift(Timex.now(), days: 1),
+  arrival_time: Timex.shift(Timex.now(), days: 1, hours: 2)
+}
+|> Repo.insert!()
+
+%Flight{
+  number: "450",
+  origin: "DEN",
+  destination: "ORD",
+  departure_time: Timex.shift(Timex.now(), days: 2),
+  arrival_time: Timex.shift(Timex.now(), days: 2, hours: 2)
+}
+|> Repo.insert!()
+
+%Flight{
+  number: "450",
+  origin: "DEN",
+  destination: "ORD",
+  departure_time: Timex.shift(Timex.now(), days: 3),
+  arrival_time: Timex.shift(Timex.now(), days: 3, hours: 2)
+}
+|> Repo.insert!()
+
+%Flight{
+  number: "860",
+  origin: "DFW",
+  destination: "ORD",
+  departure_time: Timex.shift(Timex.now(), days: 1),
+  arrival_time: Timex.shift(Timex.now(), days: 1, hours: 3)
+}
+|> Repo.insert!()
+
+%Flight{
+  number: "860",
+  origin: "DFW",
+  destination: "ORD",
+  departure_time: Timex.shift(Timex.now(), days: 2),
+  arrival_time: Timex.shift(Timex.now(), days: 2, hours: 3)
+}
+|> Repo.insert!()
+
+%Flight{
+  number: "860",
+  origin: "DFW",
+  destination: "ORD",
+  departure_time: Timex.shift(Timex.now(), days: 3),
+  arrival_time: Timex.shift(Timex.now(), days: 3, hours: 3)
+}
+|> Repo.insert!()
+
+%Flight{
+  number: "740",
+  origin: "DAB",
+  destination: "DEN",
+  departure_time: Timex.shift(Timex.now(), days: 1),
+  arrival_time: Timex.shift(Timex.now(), days: 1, hours: 4)
+}
+|> Repo.insert!()
+
+%Flight{
+  number: "740",
+  origin: "DAB",
+  destination: "DEN",
+  departure_time: Timex.shift(Timex.now(), days: 2),
+  arrival_time: Timex.shift(Timex.now(), days: 2, hours: 4)
+}
+|> Repo.insert!()
+
+%Flight{
+  number: "740",
+  origin: "DAB",
+  destination: "DEN",
+  departure_time: Timex.shift(Timex.now(), days: 3),
+  arrival_time: Timex.shift(Timex.now(), days: 3, hours: 4)
 }
 |> Repo.insert!()
