@@ -19,7 +19,7 @@ defmodule PragWeb.FlightsLive do
         loading: false
       )
 
-    {:ok, socket}
+    {:ok, socket, temporary_assigns: [flights: [], matches: []]}
   end
 
   def render(assigns) do
@@ -94,11 +94,7 @@ defmodule PragWeb.FlightsLive do
   end
 
   # handles event when clicking search flight button
-  def handle_event(
-        "search-flight-by-number",
-        %{"flight-number" => flight_number} = _session,
-        socket
-      ) do
+  def handle_event("search-flight-by-number", %{"flight-number" => flight_number}, socket) do
     send(self(), {"find_flight", flight_number})
 
     socket =
@@ -136,7 +132,6 @@ defmodule PragWeb.FlightsLive do
   # runs internal message request for searching airports by their name
   def handle_info({"find-airport", airport}, socket) do
     socket =
-
       case Flights.search_by_airport(String.upcase(airport)) do
         [] ->
           socket
