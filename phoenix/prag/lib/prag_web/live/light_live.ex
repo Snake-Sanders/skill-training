@@ -6,6 +6,7 @@ defmodule PragWeb.LightLive do
     {:ok, socket}
   end
 
+  @spec render(any) :: Phoenix.LiveView.Rendered.t()
   def render(assigns) do
     ~H"""
     <h1>Front Porch Light</h1>
@@ -42,14 +43,9 @@ defmodule PragWeb.LightLive do
 
       <div class="color-temp">
         <form phx-change="color-temp">
-          <input type="radio" id="3000" name="radio-temp" value="3000" checked={@meter_color == 3000}/>
-          <label for="3000">3000</label>
-
-          <input type="radio" id="4000" name="radio-temp" value="4000" checked={@meter_color == 4000} />
-          <label for="4000">4000</label>
-
-          <input type="radio" id="5000" name="radio-temp" value="5000" checked={@meter_color == 5000} />
-          <label for="5000">5000</label>
+          <%= for temperature <- temp_list() do %>
+            <%= temp_ratio_button(temp_code: temperature, checked: (@meter_color == temperature)) %>
+          <% end %>
         </form>
       </div>
     </div>
@@ -101,4 +97,18 @@ defmodule PragWeb.LightLive do
   defp temp_color(3000), do: "#F1C40D"
   defp temp_color(4000), do: "#FEFF66"
   defp temp_color(5000), do: "#99CCFF"
+
+  defp temp_list(), do: [3000, 4000, 5000]
+
+  defp temp_ratio_button(assigns) do
+    # Assuming form contains a User schema
+    # radio_button(form, :role, "admin")
+    # => <input id="user_role_admin" name="user[role]" type="radio" value="admin">
+    assigns = Enum.into(assigns, %{})
+
+    ~H"""
+    <input type="radio" id={"#{@temp_code}"} name="radio-temp" value={"#{@temp_code}"} checked={@checked} />
+    <label for={@temp_code}><%= @temp_code %></label>
+    """
+  end
 end
