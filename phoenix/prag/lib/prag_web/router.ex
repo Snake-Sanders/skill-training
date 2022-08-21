@@ -28,6 +28,7 @@ defmodule PragWeb.Router do
     live "/autocomplete", AutocompleteLive
     live "/filter", FilterLive
     live "/git-repos", GitRepoLive
+    live "/servers", ServersLive
   end
 
   # Other scopes may use custom stacks.
