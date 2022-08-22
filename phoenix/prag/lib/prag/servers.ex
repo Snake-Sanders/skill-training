@@ -37,6 +37,15 @@ defmodule Prag.Servers do
   """
   def get_server!(id), do: Repo.get!(Server, id)
 
+  def get_server_by_name(name) do
+    # better solution
+    # Repo.get_by(Server, name: name)
+
+    Repo.all(from s in Server, where: s.name == ^name, select: s)
+    |> List.first()
+    # |> IO.inspect(label: "++++after query")
+  end
+
   @doc """
   Creates a server.
 
@@ -101,4 +110,5 @@ defmodule Prag.Servers do
   def change_server(%Server{} = server, attrs \\ %{}) do
     Server.changeset(server, attrs)
   end
+
 end

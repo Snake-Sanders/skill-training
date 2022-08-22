@@ -17,9 +17,9 @@ defmodule PragWeb.Router do
   scope "/", PragWeb do
     pipe_through :browser
 
-    get "/", PageController, :index
     get "/sales", SalesController, :index
 
+    live "/", PageLive
     live "/light", LightLive
     live "/flights", FlightsLive
     live "/license", LicenseLive

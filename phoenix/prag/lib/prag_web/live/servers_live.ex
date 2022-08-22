@@ -33,6 +33,18 @@ defmodule PragWeb.ServersLive do
     {:noreply, socket}
   end
 
+  def handle_params(%{"name" => name}, _url, socket) do
+    server = Servers.get_server_by_name(name)
+
+    socket =
+      assign(socket,
+        selected_server: server,
+        page_title: "#{server.name}"
+      )
+
+    {:noreply, socket}
+  end
+
   # handles the url that does not have params
   def handle_params(_params, _url, socket) do
     {:noreply, socket}
@@ -45,13 +57,16 @@ defmodule PragWeb.ServersLive do
       <div class="sidebar">
         <nav>
           <%= for server <- @servers do %>
-            <div>
-            <%= live_patch link_body(server),
-                to: Routes.live_path(@socket, __MODULE__, id: server.id),
-                class: if server == @selected_server, do: "active"%>
-            </div>
+            <div><p>
+            <%= live_patch link_body(server, "name"),
+                to: Routes.live_path(@socket, __MODULE__, name: server.name),
+                replace: true,
+                class: if server == @selected_server, do: "active"
+            %>
+            </p></div>
           <% end %>
         </nav>
+
       </div>
       <div class="main">
         <div class="wrapper">
@@ -92,13 +107,12 @@ defmodule PragWeb.ServersLive do
     """
   end
 
-  defp link_body(server) do
-    assigns = %{name: server.name}
+  defp link_body(server, link_type) when link_type in ["id", "name"] do
+    assigns = %{name: server.name, id: server.id}
+
     ~H"""
     <img src="/images/server.svg">
-    <%= @name %>
+    <%= if link_type == "id", do: @id, else: @name %>
     """
-
   end
-
 end
