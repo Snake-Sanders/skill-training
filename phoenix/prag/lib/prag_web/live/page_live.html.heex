@@ -1,0 +1,34 @@
+<section class="phx-hero">
+  <h1><%= gettext "Welcome to %{name}!", name: "Phoenix" %></h1>
+  <p class="font-medium tracking-widest text-xl text-center bg-indigo-500 text-gray-100" >LiveView examples list</p>
+
+  <ul class="examples">
+    <li><p>
+      <%= live_redirect("Autocomplete", to: Routes.live_path(@socket, PragWeb.AutocompleteLive )) %>
+    </p></li>
+    <li><p>
+      <%= live_redirect("Filter", to: Routes.live_path(@socket, PragWeb.FilterLive )) %>
+    </p></li>
+    <li><p>
+      <%= live_redirect("Flights", to: Routes.live_path(@socket, PragWeb.FlightsLive )) %>
+    </p></li>
+    <li><p>
+      <%= live_redirect("GitRepo", to: Routes.live_path(@socket, PragWeb.GitRepoLive )) %>
+    </p></li>
+    <li><p>
+      <%= live_redirect("License", to: Routes.live_path(@socket, PragWeb.LicenseLive )) %>
+    </p></li>
+    <li><p>
+      <%= live_redirect("Light", to: Routes.live_path(@socket, PragWeb.LightLive )) %>
+    </p></li>
+    <li><p>
+      <%= live_redirect("SalesDashboard", to: Routes.live_path(@socket, PragWeb.SalesDashboardLive )) %>
+    </p></li>
+    <li><p>
+      <%= live_redirect("Search", to: Routes.live_path(@socket, PragWeb.SearchLive )) %>
+    </p></li>
+    <li><p>
+      <%= live_redirect("Servers", to: Routes.live_path(@socket, PragWeb.ServersLive )) %>
+    </p></li>
+  </ul>
+</section>

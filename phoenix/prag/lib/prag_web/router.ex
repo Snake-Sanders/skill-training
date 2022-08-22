@@ -17,9 +17,9 @@ defmodule PragWeb.Router do
   scope "/", PragWeb do
     pipe_through :browser
 
-    get "/", PageController, :index
     get "/sales", SalesController, :index
 
+    live "/", PageLive
     live "/light", LightLive
     live "/flights", FlightsLive
     live "/license", LicenseLive
@@ -28,6 +28,7 @@ defmodule PragWeb.Router do
     live "/autocomplete", AutocompleteLive
     live "/filter", FilterLive
     live "/git-repos", GitRepoLive
+    live "/servers", ServersLive
   end
 
   # Other scopes may use custom stacks.
