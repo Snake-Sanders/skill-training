@@ -30,5 +30,8 @@
     <li><p>
       <%= live_redirect("Servers", to: Routes.live_path(@socket, PragWeb.ServersLive )) %>
     </p></li>
+    <li><p>
+      <%= live_redirect("Donations", to: Routes.live_path(@socket, PragWeb.PaginateLive )) %>
+    </p></li>
   </ul>
 </section>
