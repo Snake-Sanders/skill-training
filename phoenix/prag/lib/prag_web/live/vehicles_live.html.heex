@@ -14,16 +14,16 @@
         <thead>
           <tr>
             <th>
-              ID
+              <%= sort_link(@socket, "ID", :id, @options) %>
             </th>
             <th>
-              Make
+              <%= sort_link(@socket, "Make", :make, @options) %>
             </th>
             <th>
-              Model
+              <%= sort_link(@socket, "Model", :model, @options) %>
             </th>
             <th>
-              Color
+            <%= sort_link(@socket, "Color", :color, @options) %>
             </th>
           </tr>
         </thead>
@@ -31,7 +31,7 @@
           <%= for vehicle <- @vehicles do %>
             <tr>
               <td>
-                <%= vehicle.id %>
+              <%= vehicle.id %>
               </td>
               <td>
                 <%= vehicle.make %>
@@ -52,7 +52,7 @@
             <%= pagination_link(@socket,
                                 "Previous",
                                 @options.page - 1,
-                                @options.per_page,
+                                @options,
                                 "previous") %>
       
           <% end %>
@@ -62,7 +62,7 @@
               <%= pagination_link(@socket,
                         i,
                         i,
-                        @options.per_page,
+                        @options,
                         if (@options.page == i) do "active" end ) %>
             <% end %>
           <% end %>
@@ -71,7 +71,7 @@
             <%= pagination_link(@socket,
                                 "Next",
                                 @options.page + 1,
-                                @options.per_page,
+                                @options,
                                 "next") %>
           <% end %>
         </div>
