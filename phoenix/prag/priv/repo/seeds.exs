@@ -18,6 +18,8 @@ alias Prag.Stores.Store
 alias Prag.Flights.Flight
 alias Prag.GitRepos.GitRepo
 alias Prag.Servers.Server
+alias Prag.Donations.Donation
+alias Prag.Vehicles.Vehicle
 
 %Boat{
   model: "1760 Retriever Jon Deluxe",
@@ -441,3 +443,79 @@ alias Prag.Servers.Server
   last_commit_message: "First big launch! 🤞"
 }
 |> Repo.insert!()
+
+donation_items = [
+  {"☕️", "Coffee"},
+  {"🥛", "Milk"},
+  {"🥩", "Beef"},
+  {"🍗", "Chicken"},
+  {"🍖", "Pork"},
+  {"🍗", "Turkey"},
+  {"🥔", "Potatoes"},
+  {"🥣", "Cereal"},
+  {"🥣", "Oatmeal"},
+  {"🥚", "Eggs"},
+  {"🥓", "Bacon"},
+  {"🧀", "Cheese"},
+  {"🥬", "Lettuce"},
+  {"🥒", "Cucumber"},
+  {"🐠", "Smoked Salmon"},
+  {"🐟", "Tuna"},
+  {"🐡", "Halibut"},
+  {"🥦", "Broccoli"},
+  {"🧅", "Onions"},
+  {"🍊", "Oranges"},
+  {"🍯", "Honey"},
+  {"🍞", "Sourdough Bread"},
+  {"🥖", "French Bread"},
+  {"🍐", "Pear"},
+  {"🥜", "Nuts"},
+  {"🍎", "Apples"},
+  {"🥥", "Coconut"},
+  {"🧈", "Butter"},
+  {"🧀", "Mozzarella"},
+  {"🍅", "Tomatoes"},
+  {"🍄", "Mushrooms"},
+  {"🍚", "Rice"},
+  {"🍜", "Pasta"},
+  {"🍌", "Banana"},
+  {"🥕", "Carrots"},
+  {"🍋", "Lemons"},
+  {"🍉", "Watermelons"},
+  {"🍇", "Grapes"},
+  {"🍓", "Strawberries"},
+  {"🍈", "Melons"},
+  {"🍒", "Cherries"},
+  {"🍑", "Peaches"},
+  {"🍍", "Pineapples"},
+  {"🥝", "Kiwis"},
+  {"🍆", "Eggplants"},
+  {"🥑", "Avocados"},
+  {"🌶", "Peppers"},
+  {"🌽", "Corn"},
+  {"🍠", "Sweet Potatoes"},
+  {"🥯", "Bagels"},
+  {"🥫", "Soup"},
+  {"🍪", "Cookies"}
+]
+
+for _i <- 0..100 do
+  {emoji, text} = Enum.random(donation_items)
+
+  %Donation{
+    days_until_expires: Enum.random(1..30),
+    emoji: emoji,
+    item: text,
+    quantity: Enum.random(1..20)
+  }
+  |> Repo.insert!()
+end
+
+for _i <- 1..1000 do
+  %Vehicle{
+    make: Faker.Vehicle.make(),
+    model: Faker.Vehicle.model(),
+    color: Faker.Color.name()
+  }
+  |> Repo.insert!()
+end

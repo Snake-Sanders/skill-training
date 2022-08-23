@@ -52,7 +52,8 @@ defmodule Prag.MixProject do
       {:tailwind, "~> 0.1.6", runtime: Mix.env() == :dev},
       {:dart_sass, "~> 0.5", runtime: Mix.env() == :dev},
       {:number, "~> 1.0"},
-      {:timex, "~> 3.7"}
+      {:timex, "~> 3.7"},
+      {:faker, "~> 0.17.0"}
     ]
   end
 
