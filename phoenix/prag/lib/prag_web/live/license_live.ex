@@ -79,9 +79,7 @@ defmodule PragWeb.LicenseLive do
     {:noreply, socket}
   end
 
-  @doc """
-  returns seconds diff
-  """
+  # returns seconds diff
   defp time_remaining(expiration_time) do
     DateTime.diff(expiration_time, Timex.now())
   end

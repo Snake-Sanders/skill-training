@@ -19,6 +19,7 @@ alias Prag.Flights.Flight
 alias Prag.GitRepos.GitRepo
 alias Prag.Servers.Server
 alias Prag.Donations.Donation
+alias Prag.Vehicles.Vehicle
 
 %Boat{
   model: "1760 Retriever Jon Deluxe",
@@ -506,6 +507,15 @@ for _i <- 0..100 do
     emoji: emoji,
     item: text,
     quantity: Enum.random(1..20)
+  }
+  |> Repo.insert!()
+end
+
+for _i <- 1..1000 do
+  %Vehicle{
+    make: Faker.Vehicle.make(),
+    model: Faker.Vehicle.model(),
+    color: Faker.Color.name()
   }
   |> Repo.insert!()
 end
