@@ -50,63 +50,6 @@ defmodule PragWeb.ServersLive do
     {:noreply, socket}
   end
 
-  def render(assigns) do
-    ~H"""
-    <h1>Servers</h1>
-    <div id="servers">
-      <div class="sidebar">
-        <nav>
-          <%= for server <- @servers do %>
-            <div><p>
-            <%= live_patch link_body(server, "name"),
-                to: Routes.live_path(@socket, __MODULE__, name: server.name),
-                replace: true,
-                class: if server == @selected_server, do: "active"
-            %>
-            </p></div>
-          <% end %>
-        </nav>
-
-      </div>
-      <div class="main">
-        <div class="wrapper">
-          <div class="card">
-            <div class="header">
-              <h2><%= @selected_server.name %></h2>
-              <span class={@selected_server.status}>
-                <%= @selected_server.status %>
-              </span>
-            </div>
-            <div class="body">
-              <div class="row">
-                <div class="deploys">
-                  <img src="/images/deploy.svg">
-                  <span>
-                    <%= @selected_server.deploy_count %> deploys
-                  </span>
-                </div>
-                <span>
-                  <%= @selected_server.size %> MB
-                </span>
-                <span>
-                  <%= @selected_server.framework %>
-                </span>
-              </div>
-              <h3>Last Commit</h3>
-              <div class="commit">
-                <%= @selected_server.last_commit_id %>
-              </div>
-              <blockquote>
-                <%= @selected_server.last_commit_message %>
-              </blockquote>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    """
-  end
-
   defp link_body(server, link_type) when link_type in ["id", "name"] do
     assigns = %{name: server.name, id: server.id}
 
