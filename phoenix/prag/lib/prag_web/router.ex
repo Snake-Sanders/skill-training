@@ -31,6 +31,8 @@ defmodule PragWeb.Router do
     live "/servers", ServersLive
     live "/paginate", PaginateLive
     live "/vehicles", VehiclesLive
+    live "/sort", SortLive
+    live "/volunteers", VolunteersLive
   end
 
   # Other scopes may use custom stacks.
