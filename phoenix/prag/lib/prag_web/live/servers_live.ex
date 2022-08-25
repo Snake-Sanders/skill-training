@@ -1,6 +1,7 @@
 defmodule PragWeb.ServersLive do
   use PragWeb, :live_view
   alias Prag.Servers
+  alias Prag.Servers.Server
 
   def mount(_param, _session, socket) do
     servers = Servers.list_servers()
@@ -8,10 +9,11 @@ defmodule PragWeb.ServersLive do
     socket =
       assign(socket,
         servers: servers,
-        selected_server: hd(servers)
+        selected_server: hd(servers),
+        changeset: Servers.change_server(%Server{})
       )
 
-    {:ok, socket}
+    {:ok, socket, temporary_assigns: [servers: []]}
   end
 
   # `handle_params` without parameters is called after `mount()`. mount does not porvide
@@ -50,12 +52,50 @@ defmodule PragWeb.ServersLive do
     {:noreply, socket}
   end
 
-  defp link_body(server, link_type) when link_type in ["id", "name"] do
-    assigns = %{name: server.name, id: server.id}
+  # the data from the form arrives as a Map with the format, as in the example below:
+  # %{"server" =>
+  #    %{ "framework" => "Java",
+  #       "git_repo" => "http/git.com",
+  #       "name" => "apache",
+  #       "size" => "299"
+  #     }
+  # }
+  # Question: Does the main key is called "server" because the form is create based on the changeset
+  # which is %Server{}
+  def handle_event("save", %{"server" => attrs}, socket) do
+    # retrieve the data from the Server Form
+    # store it in the DB and append it to the list on the client side.
+    # if it fails storing into DB it returns the changeset so the form data is not lost.
+
+    IO.puts("handling save #{inspect(attrs)}")
+
+    case Servers.create_server(attrs) do
+      {:ok, server} ->
+        IO.puts("added into DB #{inspect(server)}")
+
+        socket =
+          socket
+          |> update(:servers, fn servers -> [server | servers] end)
+          |> assign(selected_server: server, page_title: server.name)
+          |> push_patch(to: Routes.live_path(socket, __MODULE__))
+
+        IO.puts("Socket is; #{inspect(socket)}")
+        {:noreply, socket}
+
+      {:error, %Ecto.Changeset{} = changeset} ->
+        IO.puts("\n\nfailed saving entry #{inspect(changeset)}")
+        socket = assign(socket, changeset: changeset)
+        {:noreply, socket}
+    end
+  end
+
+  defp link_body(server, "name") do
+    assigns = %{name: server.name, status: server.status}
 
     ~H"""
+    <span class={"status #{@status}"}></span>
     <img src="/images/server.svg">
-    <%= if link_type == "id", do: @id, else: @name %>
+    <%= @name %>
     """
   end
 end

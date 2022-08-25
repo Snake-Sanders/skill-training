@@ -29,6 +29,8 @@ defmodule PragWeb.Router do
     live "/filter", FilterLive
     live "/git-repos", GitRepoLive
     live "/servers", ServersLive
+    live "/servers/new", ServersLive, :new
+    live "/servers/delete", ServersLive, :delete
     live "/paginate", PaginateLive
     live "/vehicles", VehiclesLive
     live "/sort", SortLive
