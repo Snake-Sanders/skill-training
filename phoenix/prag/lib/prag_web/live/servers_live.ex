@@ -91,6 +91,18 @@ defmodule PragWeb.ServersLive do
     end
   end
 
+  def handle_event("validate", %{"server" => attrs}, socket) do
+    changeset =
+      %Server{}
+      |> Servers.change_server(attrs)
+      |> Map.put(:action, :insert)
+
+    socket =
+      assign(socket, changeset: changeset)
+
+    {:noreply, socket}
+  end
+
   defp link_body(server, "name") do
     assigns = %{name: server.name, status: server.status}
 
