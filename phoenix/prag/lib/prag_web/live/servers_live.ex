@@ -6,34 +6,14 @@ defmodule PragWeb.ServersLive do
   def mount(_param, _session, socket) do
     servers = Servers.list_servers()
 
-    socket =
-      assign(socket,
-        servers: servers,
-        selected_server: hd(servers),
-        changeset: Servers.change_server(%Server{})
-      )
+    socket = assign(socket, servers: servers)
 
-    {:ok, socket, temporary_assigns: [servers: []]}
+    {:ok, socket}
   end
 
   # `handle_params` without parameters is called after `mount()`. mount does not porvide
-  # any id, therefore the default case will show the first server selected
+  # any name, therefore the default case will show the first server selected
   # (selected_server is set in mount).
-  # `handle_params` is also called when clicking on a `patch link` with the desired
-  # server id to be displayed.
-  def handle_params(%{"id" => id} = _params, _url, socket) do
-    server =
-      String.to_integer(id)
-      |> Servers.get_server!()
-
-    socket =
-      assign(socket,
-        selected_server: server,
-        page_title: "#{server.name}"
-      )
-
-    {:noreply, socket}
-  end
 
   def handle_params(%{"name" => name}, _url, socket) do
     server = Servers.get_server_by_name(name)
@@ -41,15 +21,43 @@ defmodule PragWeb.ServersLive do
     socket =
       assign(socket,
         selected_server: server,
-        page_title: "#{server.name}"
+        page_title: server.name
       )
 
     {:noreply, socket}
   end
 
   # handles the url that does not have params
+  # This "handle_params" clause needs to assign socket data
+  # based on whether the action is "new" or not.
   def handle_params(_params, _url, socket) do
-    {:noreply, socket}
+    if socket.assigns.live_action == :new do
+      # The live_action is "new", so the form is being
+      # displayed. Therefore, assign an empty changeset
+      # for the form. Also don't show the selected
+      # server in the sidebar which would be confusing.
+      changeset = Servers.change_server(%Server{})
+
+      socket =
+        assign(socket,
+          selected_server: nil,
+          changeset: changeset
+        )
+
+      {:noreply, socket}
+    else
+      # The live_action is NOT "new", so the form
+      # is NOT being displayed. Therefore, don't assign
+      # an empty changeset. Instead, just select the
+      # first server in list. This previously happened
+      # in "mount", but since "handle_params" is always
+      # invoked after "mount", we decided to select the
+      # default server here instead of in "mount".
+      socket =
+        assign(socket, selected_server: hd(socket.assigns.servers))
+
+      {:noreply, socket}
+    end
   end
 
   # the data from the form arrives as a Map with the format, as in the example below:
@@ -67,24 +75,18 @@ defmodule PragWeb.ServersLive do
     # store it in the DB and append it to the list on the client side.
     # if it fails storing into DB it returns the changeset so the form data is not lost.
 
-    IO.puts("handling save #{inspect(attrs)}")
-
     case Servers.create_server(attrs) do
       {:ok, server} ->
-        IO.puts("added into DB #{inspect(server)}")
-
         socket =
           socket
           |> update(:servers, fn servers -> [server | servers] end)
-          |> assign(selected_server: server, page_title: server.name)
-          |> push_patch(to: Routes.live_path(socket, __MODULE__))
+          |> push_patch(to: Routes.live_path(socket, __MODULE__, id: server.id))
 
-        IO.puts("Socket is; #{inspect(socket)}")
         {:noreply, socket}
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        IO.puts("\n\nfailed saving entry #{inspect(changeset)}")
         socket = assign(socket, changeset: changeset)
+
         {:noreply, socket}
     end
   end

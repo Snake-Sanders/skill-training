@@ -2,53 +2,62 @@
 <h1>Servers</h1>
 <div id="servers">
   <div class="sidebar">
-    <div>
-      <%= live_patch("Delete Server", to: Routes.servers_path(@socket, :delete)) %>
-    </div>
-    <div >
-      <%= live_patch("Add server",
-        to: Routes.servers_path(@socket, :new),
-        class: "button text-lg flex justify-end mr-4 mb-2"
-        ) %>
-    </div>
-    <nav id="server-list" phx-update="prepend">
+    <nav>
+      <%= live_patch("Delete Server", 
+          to: Routes.servers_path(@socket, :delete),
+          class: "button text-lg flex justify-start mr-4 mb-2"
+      )%>
+  
+      <%= live_patch("New Server",
+          to: Routes.servers_path(@socket, :new),
+          class: "button text-lg flex justify-end mr-4 mb-2"
+      )%>
+      
       <%= for server <- @servers do %>
-      <div id={Integer.to_string(server.id)}>
-        <p>
         <%= live_patch link_body(server, "name"),
-            to: Routes.live_path(@socket, __MODULE__, name: server.name),
+            to: Routes.live_path(@socket,
+                                __MODULE__, 
+                                name: server.name,
+                                id: server.id),
             replace: true,
             class: if server == @selected_server, do: "active"
         %>
-        </p>
-      </div>
-      <% end %>
+    <% end %>
     </nav>
   </div>
   <div class="main">
     <div class="wrapper">
       <%= if @live_action == :new do  %>
         <.form let={f} for={@changeset} phx_submit="save">
-          <div class="field">Name</div>
-          <%= text_input f, :name  %>
-          <%= error_tag(f, :name) %>
-
-          <div class="field">Framework</div>
-          <%= text_input f, :framework  %>
-          <%= error_tag(f, :framework) %>
-          
-          <div class="field">Size (MB)</div>
-          <%= text_input f, :size  %>
-          <%= error_tag(f, :size) %>
-
-          <div class="field">Git Repo</div>
-          <%= text_input f, :git_repo  %>
-          <%= error_tag(f, :git_repo) %>
-          
-          <div class="field mt-4 mb-1">
-            <%= submit("Save", phx_disable_with: "Saving...") %>
-            <a class="cancel">Cancel</a>
+          <div class="field">
+            <%= label f, :name %>
+            <%= text_input f, :name  %>
+            <%= error_tag f, :name %>
           </div>
+
+          <div class="field">
+            <%= label f, :framework %>
+            <%= text_input f, :framework  %>
+            <%= error_tag f, :framework %>
+          </div>
+          
+          <div class="field">
+            <%= label f, :size, "Size (MB)" %>
+            <%= number_input f, :size  %>
+            <%= error_tag f, :size %>
+          </div>
+
+          <div class="field">
+            <%= label f, :git_repo, "Git Repo" %>
+            <%= text_input f, :git_repo  %>
+            <%= error_tag f, :git_repo %>
+          </div>
+          
+          <%= submit("Save", phx_disable_with: "Saving...") %>
+          <%= live_patch "Cancel", 
+              to: Routes.live_path(@socket, __MODULE__), 
+              class: "cancel" 
+          %>
             
         </.form> 
       <% else %>
