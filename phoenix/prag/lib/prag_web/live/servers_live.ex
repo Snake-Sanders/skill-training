@@ -53,8 +53,7 @@ defmodule PragWeb.ServersLive do
       # in "mount", but since "handle_params" is always
       # invoked after "mount", we decided to select the
       # default server here instead of in "mount".
-      socket =
-        assign(socket, selected_server: hd(socket.assigns.servers))
+      socket = assign(socket, selected_server: hd(socket.assigns.servers))
 
       {:noreply, socket}
     end
@@ -97,8 +96,26 @@ defmodule PragWeb.ServersLive do
       |> Servers.change_server(attrs)
       |> Map.put(:action, :insert)
 
+    socket = assign(socket, changeset: changeset)
+
+    {:noreply, socket}
+  end
+
+  def handle_event("toggle-status", %{"id" => id}, socket) do
+    server = Servers.get_server!(id)
+    new_status = if server.status == "up", do: "down", else: "up"
+
+    {:ok, server} = Servers.update_server(server, %{status: new_status})
+
+    socket = assign(socket, selected_server: server)
+
     socket =
-      assign(socket, changeset: changeset)
+      update(socket, :servers,
+        &Enum.map(&1,
+          fn s ->
+            if s.id == server.id, do: server, else: s
+          end)
+      )
 
     {:noreply, socket}
   end

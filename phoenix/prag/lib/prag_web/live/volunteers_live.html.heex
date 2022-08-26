@@ -44,16 +44,11 @@
           <%= volunteer.phone %>
         </div>
         <div class="status">
-          <%= if volunteer.checked_out do %>
-            <img src="/images/check-circle.svg">
-            Volunteered
-          <% else %>
-            <button phx-click="checkout"
+            <button phx-click="toggle-status"
                     phx-value-id={volunteer.id}
                     phx-disable-with="Saving...">
-              Check Out
+            <%= if volunteer.checked_out, do: "Check In", else: "Check Out" %>    
             </button>
-          <% end %>
         </div>
       </div>
     <% end %>
