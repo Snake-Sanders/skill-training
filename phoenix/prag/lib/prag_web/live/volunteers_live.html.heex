@@ -48,7 +48,9 @@
             <img src="/images/check-circle.svg">
             Volunteered
           <% else %>
-            <button>
+            <button phx-click="checkout"
+                    phx-value-id={volunteer.id}
+                    phx-disable-with="Saving...">
               Check Out
             </button>
           <% end %>
