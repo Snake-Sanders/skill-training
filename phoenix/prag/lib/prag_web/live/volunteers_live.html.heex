@@ -1,10 +1,14 @@
 <h1>Volunteer Check-In</h1>
 <div id="checkin">
-  <.form let={f} for={@changeset} phx-submit="save">
+  <.form let={f} for={@changeset} 
+          phx-submit="save"
+          phx-change="validate">
+
     <div class="filed">
       <%= text_input f, :name,
                         placeholder: "Name",
-                        autocomplete: "off"
+                        autocomplete: "off",
+                        phx_debounce: "blur"
       %>
       <%= error_tag f, :name %>
     </div>
@@ -12,7 +16,8 @@
     <div class="filed">
       <%= telephone_input f, :phone,
                               placeholder: "Phone",
-                              autocomplete: "off"
+                              autocomplete: "off",
+                              phx_debounce: "blur"
       %>
       <%= error_tag f, :phone %>
     </div>

@@ -13,7 +13,7 @@ defmodule PragWeb.VolunteersLive do
         changeset: Volunteers.change_volunteer(%Volunteer{})
       )
 
-    {:ok, socket, temporary_assigns: [ volunteers: []]}
+    {:ok, socket, temporary_assigns: [volunteers: []]}
   end
 
   def handle_event("save", %{"volunteer" => params}, socket) do
@@ -36,5 +36,21 @@ defmodule PragWeb.VolunteersLive do
         socket = assign(socket, changeset: changeset)
         {:noreply, socket}
     end
+  end
+
+  def handle_event("validate", %{"volunteer" => attrs}, socket) do
+    # In order to display any validation fields, it is required to indicate the action
+    # of the changeset,
+    changeset =
+      %Volunteer{}
+      |> Volunteers.change_volunteer(attrs)
+      |> Map.put(:action, :insert)
+
+    # updating the changeset in the socket will trigger a render
+    socket =
+      assign(socket, changeset: changeset)
+
+
+    {:noreply, socket}
   end
 end
