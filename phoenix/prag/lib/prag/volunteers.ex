@@ -8,8 +8,10 @@ defmodule Prag.Volunteers do
 
   alias Prag.Volunteers.Volunteer
 
+  @topic inspect(__MODULE__)
+
   def subscribe() do
-    Phoenix.PubSub.subscribe(Prag.PubSub, "volunteers")
+    Phoenix.PubSub.subscribe(Prag.PubSub, @topic)
   end
 
   @doc """
@@ -82,7 +84,7 @@ defmodule Prag.Volunteers do
   def broadcast({:ok, volunteer}, event) do
     Phoenix.PubSub.broadcast(
       Prag.PubSub,
-      "volunteers",
+      @topic,
       {event, volunteer}
     )
 
