@@ -8,6 +8,10 @@ defmodule Prag.Volunteers do
 
   alias Prag.Volunteers.Volunteer
 
+  def subscribe() do
+    Phoenix.PubSub.subscribe(Prag.PubSub, "volunteers")
+  end
+
   @doc """
   Returns the list of volunteers.
 
@@ -53,6 +57,7 @@ defmodule Prag.Volunteers do
     %Volunteer{}
     |> Volunteer.changeset(attrs)
     |> Repo.insert()
+    |> broadcast(:volunteer_created)
   end
 
   @doc """
@@ -71,7 +76,20 @@ defmodule Prag.Volunteers do
     volunteer
     |> Volunteer.changeset(attrs)
     |> Repo.update()
+    |> broadcast(:volunteer_updated)
   end
+
+  def broadcast({:ok, volunteer}, event) do
+    Phoenix.PubSub.broadcast(
+      Prag.PubSub,
+      "volunteers",
+      {event, volunteer}
+    )
+
+    {:ok, volunteer}
+  end
+
+  def broadcast({:error, _reason} = error, _event), do: error
 
   @doc """
   Deletes a volunteer.

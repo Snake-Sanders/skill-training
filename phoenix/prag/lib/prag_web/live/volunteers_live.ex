@@ -5,6 +5,8 @@ defmodule PragWeb.VolunteersLive do
   alias Prag.Volunteers.Volunteer
 
   def mount(_params, _session, socket) do
+    if connected?(socket), do: Volunteers.subscribe()
+
     volunteers = Volunteers.list_volunteers()
 
     socket =
@@ -22,12 +24,12 @@ defmodule PragWeb.VolunteersLive do
       {:ok, volunteer} ->
         # when the item was inserted in the database:
         # updates the list of volunteers without having to render all the list again.
-        socket = update(socket, :volunteers, fn volunteers -> [volunteer | volunteers] end)
+        # when volunteer is created there is a new event handled by handle_info
         # now prepares for the next volunteer
         changeset = Volunteers.change_volunteer(%Volunteer{})
         socket = assign(socket, changeset: changeset)
         # to see the "Saving..." message in the button
-        :timer.sleep(500)
+
         {:noreply, socket}
 
       {:error, %Ecto.Changeset{} = changeset} ->
@@ -60,13 +62,23 @@ defmodule PragWeb.VolunteersLive do
     {:ok, _volunteer} =
       Volunteers.toggle_status_volunteer(volunteer)
 
-    # volunteers is an empty list on the server side because we use `temporary_assigns`
-    # note: although we use `prepend` on the view, phoenix is smart enough to not append
-    # the full list, but to update those items with the id which already is in the DOM.
-    volunteers = Volunteers.list_volunteers()
-    socket = assign(socket, volunteers: volunteers)
+    {:noreply, socket}
+  end
 
-    :timer.sleep(500)
+  def handle_info({:volunteer_created, volunteer}, socket) do
+    # this changes are reflected to the client with preprend event
+    socket =
+      update(socket, :volunteers,
+        fn volunteers -> [volunteer | volunteers] end)
+
+    {:noreply, socket}
+  end
+
+  def handle_info({:volunteer_updated, volunteer}, socket) do
+  # this changes are reflected to the client with preprend event
+  socket =
+      update(socket, :volunteers,
+        fn volunteers -> [volunteer | volunteers] end)
 
     {:noreply, socket}
   end
