@@ -634,6 +634,7 @@ li:hover {
   }
 }
 
+
 #servers {
   @apply flex max-w-4xl mx-auto;
 
@@ -645,6 +646,10 @@ li:hover {
 
       .active {
         @apply text-white bg-indigo-900;
+      }
+
+      .add {
+        @apply bg-indigo-600;
       }
 
       .status {
@@ -682,10 +687,6 @@ li:hover {
 
     .wrapper {
       @apply flex-1 max-w-2xl mr-auto px-6;
-    }
-
-    h2 {
-      @apply text-center text-2xl font-bold mb-4;
     }
 
     form {
@@ -749,7 +750,7 @@ li:hover {
         @apply px-6 py-5 border-b border-gray-200 flex items-center flex-wrap justify-between;
 
         h2 {
-          @apply mb-0 text-xl font-semibold text-indigo-800;
+          @apply text-xl font-semibold text-indigo-800 mb-0;
         }
       }
 
@@ -761,7 +762,7 @@ li:hover {
         }
 
         .row {
-          @apply flex flex-wrap items-baseline justify-between text-base font-medium text-gray-500;
+          @apply flex flex-wrap items-baseline justify-between text-base  font-medium text-gray-500;
         }
 
         .deploys {
@@ -772,8 +773,7 @@ li:hover {
           }
         }
 
-        .repo,
-        .commit {
+        .repo, .commit {
           @apply text-sm text-gray-900;
         }
 
@@ -784,6 +784,7 @@ li:hover {
     }
   }
 }
+
 
 
 #vehicles {

@@ -1,10 +1,14 @@
 <h1>Volunteer Check-In</h1>
 <div id="checkin">
-  <.form let={f} for={@changeset} phx-submit="save">
+  <.form let={f} for={@changeset} 
+          phx-submit="save"
+          phx-change="validate">
+
     <div class="filed">
       <%= text_input f, :name,
                         placeholder: "Name",
-                        autocomplete: "off"
+                        autocomplete: "off",
+                        phx_debounce: "blur"
       %>
       <%= error_tag f, :name %>
     </div>
@@ -12,7 +16,8 @@
     <div class="filed">
       <%= telephone_input f, :phone,
                               placeholder: "Phone",
-                              autocomplete: "off"
+                              autocomplete: "off",
+                              phx_debounce: "blur"
       %>
       <%= error_tag f, :phone %>
     </div>
@@ -39,14 +44,11 @@
           <%= volunteer.phone %>
         </div>
         <div class="status">
-          <%= if volunteer.checked_out do %>
-            <img src="/images/check-circle.svg">
-            Volunteered
-          <% else %>
-            <button>
-              Check Out
+            <button phx-click="toggle-status"
+                    phx-value-id={volunteer.id}
+                    phx-disable-with="Saving...">
+            <%= if volunteer.checked_out, do: "Check In", else: "Check Out" %>    
             </button>
-          <% end %>
         </div>
       </div>
     <% end %>

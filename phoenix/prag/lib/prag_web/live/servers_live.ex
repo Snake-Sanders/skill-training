@@ -1,37 +1,19 @@
 defmodule PragWeb.ServersLive do
   use PragWeb, :live_view
   alias Prag.Servers
+  alias Prag.Servers.Server
 
   def mount(_param, _session, socket) do
     servers = Servers.list_servers()
 
-    socket =
-      assign(socket,
-        servers: servers,
-        selected_server: hd(servers)
-      )
+    socket = assign(socket, servers: servers)
 
     {:ok, socket}
   end
 
   # `handle_params` without parameters is called after `mount()`. mount does not porvide
-  # any id, therefore the default case will show the first server selected
+  # any name, therefore the default case will show the first server selected
   # (selected_server is set in mount).
-  # `handle_params` is also called when clicking on a `patch link` with the desired
-  # server id to be displayed.
-  def handle_params(%{"id" => id} = _params, _url, socket) do
-    server =
-      String.to_integer(id)
-      |> Servers.get_server!()
-
-    socket =
-      assign(socket,
-        selected_server: server,
-        page_title: "#{server.name}"
-      )
-
-    {:noreply, socket}
-  end
 
   def handle_params(%{"name" => name}, _url, socket) do
     server = Servers.get_server_by_name(name)
@@ -39,80 +21,112 @@ defmodule PragWeb.ServersLive do
     socket =
       assign(socket,
         selected_server: server,
-        page_title: "#{server.name}"
+        page_title: server.name
       )
 
     {:noreply, socket}
   end
 
   # handles the url that does not have params
+  # This "handle_params" clause needs to assign socket data
+  # based on whether the action is "new" or not.
   def handle_params(_params, _url, socket) do
+    if socket.assigns.live_action == :new do
+      # The live_action is "new", so the form is being
+      # displayed. Therefore, assign an empty changeset
+      # for the form. Also don't show the selected
+      # server in the sidebar which would be confusing.
+      changeset = Servers.change_server(%Server{})
+
+      socket =
+        assign(socket,
+          selected_server: nil,
+          changeset: changeset
+        )
+
+      {:noreply, socket}
+    else
+      # The live_action is NOT "new", so the form
+      # is NOT being displayed. Therefore, don't assign
+      # an empty changeset. Instead, just select the
+      # first server in list. This previously happened
+      # in "mount", but since "handle_params" is always
+      # invoked after "mount", we decided to select the
+      # default server here instead of in "mount".
+      socket = assign(socket, selected_server: hd(socket.assigns.servers))
+
+      {:noreply, socket}
+    end
+  end
+
+  # the data from the form arrives as a Map with the format, as in the example below:
+  # %{"server" =>
+  #    %{ "framework" => "Java",
+  #       "git_repo" => "http/git.com",
+  #       "name" => "apache",
+  #       "size" => "299"
+  #     }
+  # }
+  # Question: Does the main key is called "server" because the form is create based on the changeset
+  # which is %Server{}
+  def handle_event("save", %{"server" => attrs}, socket) do
+    # retrieve the data from the Server Form
+    # store it in the DB and append it to the list on the client side.
+    # if it fails storing into DB it returns the changeset so the form data is not lost.
+
+    case Servers.create_server(attrs) do
+      {:ok, server} ->
+        socket =
+          socket
+          |> update(:servers, fn servers -> [server | servers] end)
+          |> push_patch(to: Routes.live_path(socket, __MODULE__, id: server.id))
+
+        {:noreply, socket}
+
+      {:error, %Ecto.Changeset{} = changeset} ->
+        socket = assign(socket, changeset: changeset)
+
+        {:noreply, socket}
+    end
+  end
+
+  def handle_event("validate", %{"server" => attrs}, socket) do
+    changeset =
+      %Server{}
+      |> Servers.change_server(attrs)
+      |> Map.put(:action, :insert)
+
+    socket = assign(socket, changeset: changeset)
+
     {:noreply, socket}
   end
 
-  def render(assigns) do
-    ~H"""
-    <h1>Servers</h1>
-    <div id="servers">
-      <div class="sidebar">
-        <nav>
-          <%= for server <- @servers do %>
-            <div><p>
-            <%= live_patch link_body(server, "name"),
-                to: Routes.live_path(@socket, __MODULE__, name: server.name),
-                replace: true,
-                class: if server == @selected_server, do: "active"
-            %>
-            </p></div>
-          <% end %>
-        </nav>
+  def handle_event("toggle-status", %{"id" => id}, socket) do
+    server = Servers.get_server!(id)
+    new_status = if server.status == "up", do: "down", else: "up"
 
-      </div>
-      <div class="main">
-        <div class="wrapper">
-          <div class="card">
-            <div class="header">
-              <h2><%= @selected_server.name %></h2>
-              <span class={@selected_server.status}>
-                <%= @selected_server.status %>
-              </span>
-            </div>
-            <div class="body">
-              <div class="row">
-                <div class="deploys">
-                  <img src="/images/deploy.svg">
-                  <span>
-                    <%= @selected_server.deploy_count %> deploys
-                  </span>
-                </div>
-                <span>
-                  <%= @selected_server.size %> MB
-                </span>
-                <span>
-                  <%= @selected_server.framework %>
-                </span>
-              </div>
-              <h3>Last Commit</h3>
-              <div class="commit">
-                <%= @selected_server.last_commit_id %>
-              </div>
-              <blockquote>
-                <%= @selected_server.last_commit_message %>
-              </blockquote>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    """
+    {:ok, server} = Servers.update_server(server, %{status: new_status})
+
+    socket = assign(socket, selected_server: server)
+
+    socket =
+      update(socket, :servers,
+        &Enum.map(&1,
+          fn s ->
+            if s.id == server.id, do: server, else: s
+          end)
+      )
+
+    {:noreply, socket}
   end
 
-  defp link_body(server, link_type) when link_type in ["id", "name"] do
-    assigns = %{name: server.name, id: server.id}
+  defp link_body(server, "name") do
+    assigns = %{name: server.name, status: server.status}
 
     ~H"""
+    <span class={"status #{@status}"}></span>
     <img src="/images/server.svg">
-    <%= if link_type == "id", do: @id, else: @name %>
+    <%= @name %>
     """
   end
 end

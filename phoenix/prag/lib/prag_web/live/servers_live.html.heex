@@ -1,0 +1,103 @@
+
+<h1>Servers</h1>
+<div id="servers">
+  <div class="sidebar">
+    <nav>
+      <%= live_patch("Delete Server", 
+          to: Routes.servers_path(@socket, :delete),
+          class: "button text-lg flex justify-start mr-4 mb-2"
+      )%>
+  
+      <%= live_patch("New Server",
+          to: Routes.servers_path(@socket, :new),
+          class: "button text-lg flex justify-end mr-4 mb-2"
+      )%>
+      
+      <%= for server <- @servers do %>
+        <%= live_patch link_body(server, "name"),
+            to: Routes.live_path(@socket,
+                                __MODULE__, 
+                                name: server.name,
+                                id: server.id),
+            replace: true,
+            class: if server == @selected_server, do: "active"
+        %>
+    <% end %>
+    </nav>
+  </div>
+  <div class="main">
+    <div class="wrapper">
+      <%= if @live_action == :new do  %>
+        <.form let={f} for={@changeset} phx-submit="save"
+                                        phx-change="validate">
+          <div class="field">
+            <%= label f, :name %>
+            <%= text_input f, :name, phx_debounce: "blur" %>
+            <%= error_tag f, :name %>
+          </div>
+
+          <div class="field">
+            <%= label f, :framework %>
+            <%= text_input f, :framework, phx_debounce: "blur" %>
+            <%= error_tag f, :framework %>
+          </div>
+          
+          <div class="field">
+            <%= label f, :size, "Size (MB)" %>
+            <%= number_input f, :size, phx_debounce: "blur" %>
+            <%= error_tag f, :size %>
+          </div>
+
+          <div class="field">
+            <%= label f, :git_repo, "Git Repo" %>
+            <%= text_input f, :git_repo, phx_debounce: "blur" %>
+            <%= error_tag f, :git_repo %>
+          </div>
+          
+          <%= submit("Save", phx_disable_with: "Saving...") %>
+          <%= live_patch "Cancel", 
+              to: Routes.live_path(@socket, __MODULE__), 
+              class: "cancel" 
+          %>
+            
+        </.form> 
+      <% else %>
+        <div class="card">
+          <div class="header">
+            <h2><%= @selected_server.name %></h2>
+            <button class={@selected_server.status} 
+                    href="#" 
+                    phx-click="toggle-status"
+                    phx-value-id={@selected_server.id}
+                    phx_disable_with="Saving...">
+              <%= @selected_server.status %>
+            </button>
+          </div>
+          <div class="body">
+            <div class="row">
+              <div class="deploys">
+                <img src="/images/deploy.svg">
+                  <span>
+                    <%= @selected_server.deploy_count %> deploys
+                  </span>
+                </div>
+              <span>
+                <%= @selected_server.size %> MB
+              </span>
+                <span>
+                  <%= @selected_server.framework %>
+                </span>
+              </div>
+              <h3>Last Commit</h3>
+              <div class="commit">
+                <%= @selected_server.last_commit_id %>
+              </div>
+              <blockquote>
+                <%= @selected_server.last_commit_message %>
+              </blockquote>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
