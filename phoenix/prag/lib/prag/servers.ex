@@ -8,6 +8,12 @@ defmodule Prag.Servers do
 
   alias Prag.Servers.Server
 
+  @topic inspect(__MODULE__)
+
+  def subscribe() do
+    Phoenix.PubSub.subscribe(Prag.PubSub, @topic)
+  end
+
   @doc """
   Returns the list of servers.
 
@@ -43,6 +49,7 @@ defmodule Prag.Servers do
 
     Repo.all(from s in Server, where: s.name == ^name, select: s)
     |> List.first()
+
     # |> IO.inspect(label: "++++after query")
   end
 
@@ -62,6 +69,7 @@ defmodule Prag.Servers do
     %Server{}
     |> Server.changeset(attrs)
     |> Repo.insert()
+    |> broadcast(:server_created)
   end
 
   @doc """
@@ -80,7 +88,20 @@ defmodule Prag.Servers do
     server
     |> Server.changeset(attrs)
     |> Repo.update()
+    |> broadcast(:server_updated)
   end
+
+  def broadcast({:ok, server}, event) do
+    Phoenix.PubSub.broadcast(
+      Prag.PubSub,
+      @topic,
+      {event, server}
+    )
+
+    {:ok, server}
+  end
+
+  def broadcast({:error, _reason} = error, _event), do: error
 
   @doc """
   Deletes a server.
@@ -111,4 +132,10 @@ defmodule Prag.Servers do
     Server.changeset(server, attrs)
   end
 
+  def reset_default() do
+    servers = list_servers()
+
+    Enum.take(servers, length(servers) - 4)
+    |> Enum.each(&(delete_server/1))
+  end
 end
