@@ -27,31 +27,11 @@ import { Socket } from "phoenix"
 import { LiveSocket } from "phoenix_live_view"
 import topbar from "../vendor/topbar"
 
-// declares the Hook variable
-let PragHooks = {}
+import InfiniteScroll from "./infinite-scroll";
 
-// add a property
-PragHooks.InfiniteScroll = {
-    mounted() {
-        console.log("Footer added to DOM!", this.el);    
-        this.observer = new IntersectionObserver(entries => {
-            const entry = entries[0];
-            if(entry.isIntersecting) {
-                console.log("Footer is visible!")
-                // send an event to the server
-                this.pushEvent("load-more")
-            }
-        } )
-        this.observer.observe(this.el);
-    },
-    updated(){
-        const pageNumber = this.el.dataset.pageNumber;
-        console.log("updated page: ", pageNumber);
-    },
-    destroyed() {
-        this.observer.disconnect()
-    }
-
+let PragHooks = {
+    InfiniteScroll: InfiniteScroll,
+    // anotherHook: AnotherHook
 };
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
