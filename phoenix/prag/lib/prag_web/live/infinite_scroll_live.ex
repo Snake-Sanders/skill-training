@@ -52,12 +52,12 @@ defmodule PragWeb.InfiniteScrollLive do
       <!-- phx-hook="InfiniteScroll"
           data-page-number={@page}>
       -->
-      <div id="footer">
-        <button class="loader"
-                phx-click="load-more"
-                phx-disable-with="loading...">
+      <div id="footer"
+          phx-hook="InfiniteScroll"
+          data-page-number={@page}>
+        <div class="loader">
           Loading More...
-        </button>
+        </div>
       </div>
     </div>
     """

@@ -27,8 +27,38 @@ import { Socket } from "phoenix"
 import { LiveSocket } from "phoenix_live_view"
 import topbar from "../vendor/topbar"
 
+// declares the Hook variable
+let PragHooks = {}
+
+// add a property
+PragHooks.InfiniteScroll = {
+    mounted() {
+        console.log("Footer added to DOM!", this.el);    
+        this.observer = new IntersectionObserver(entries => {
+            const entry = entries[0];
+            if(entry.isIntersecting) {
+                console.log("Footer is visible!")
+                // send an event to the server
+                this.pushEvent("load-more")
+            }
+        } )
+        this.observer.observe(this.el);
+    },
+    updated(){
+        const pageNumber = this.el.dataset.pageNumber;
+        console.log("updated page: ", pageNumber);
+    },
+    destroyed() {
+        this.observer.disconnect()
+    }
+
+};
+
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
-let liveSocket = new LiveSocket("/live", Socket, { params: { _csrf_token: csrfToken } })
+let liveSocket = new LiveSocket("/live", Socket, { 
+    hooks: PragHooks,
+    params: { _csrf_token: csrfToken } 
+})
 
 // Show progress bar on live navigation and form submits
 topbar.config({ barColors: { 0: "#29d" }, shadowColor: "rgba(0, 0, 0, .3)" })
