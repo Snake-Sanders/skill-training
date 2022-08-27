@@ -14,10 +14,11 @@
     </div>
 
     <div class="filed">
-      <%= telephone_input f, :phone,
-                              placeholder: "Phone",
-                              autocomplete: "off",
-                              phx_debounce: "blur"
+      <%= text_input f, :phone,
+                        placeholder: "Phone",
+                        autocomplete: "off",
+                        phx_hook: "PhoneFormatter",
+                        phx_debounce: "blur"
       %>
       <%= error_tag f, :phone %>
     </div>

@@ -42,6 +42,12 @@
     <li><p>
       <%= live_redirect("Volunteers", to: Routes.live_path(@socket, PragWeb.VolunteersLive )) %>
     </p></li>
+    <li><p>
+      <%= live_redirect("Infinite scroll", to: Routes.live_path(@socket, PragWeb.InfiniteScrollLive )) %>
+    </p></li>
+    <li><p>
+      <%= live_redirect("Date Picker", to: Routes.live_path(@socket, PragWeb.DatePickerLive )) %>
+    </p></li>
 
   </ul>
 </section>

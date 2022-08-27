@@ -20,7 +20,7 @@ alias Prag.GitRepos.GitRepo
 alias Prag.Servers.Server
 alias Prag.Donations.Donation
 alias Prag.Vehicles.Vehicle
-
+alias Prag.PizzaOrders.PizzaOrder
 %Boat{
   model: "1760 Retriever Jon Deluxe",
   price: "$",
@@ -395,7 +395,6 @@ alias Prag.Vehicles.Vehicle
 }
 |> Repo.insert!()
 
-
 %Server{
   name: "dancing-lizard",
   status: "up",
@@ -518,4 +517,39 @@ for _i <- 1..1000 do
     color: Faker.Color.name()
   }
   |> Repo.insert!()
+end
+
+pizza_toppings = [
+  "🍗 Chicken",
+  "🌿 Basil",
+  "🧄 Garlic",
+  "🥓 Bacon",
+  "🧀 Cheese",
+  "🐠 Salmon",
+  "🍤 Shrimp",
+  "🥦 Broccoli",
+  "🧅 Onions",
+  "🍅 Tomatoes",
+  "🍄 Mushrooms",
+  "🍍 Pineapples",
+  "🍆 Eggplants",
+  "🥑 Avocados",
+  "🌶 Peppers",
+  "🍕 Pepperonis"
+]
+
+for _i <- 1..1000 do
+  [topping_1, topping_2] =
+    pizza_toppings
+    |> Enum.shuffle()
+    |> Enum.take(2)
+
+    pizza = "#{Faker.Pizza.size} #{Faker.Pizza.style()} with
+            #{topping_1} and #{topping_2}"
+
+    %PizzaOrder{
+      username: Faker.Internet.user_name(),
+      pizza: pizza
+    }
+    |> Repo.insert!()
 end

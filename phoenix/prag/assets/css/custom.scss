@@ -940,3 +940,33 @@ li:hover {
     }
   }
 }
+
+#infinite-scroll {
+  .order {
+    @apply flex items-center px-6 py-4 m-6 mx-auto max-w-2xl rounded bg-white overflow-hidden shadow-lg text-gray-700;
+
+    .id {
+      @apply inline-flex mr-4 px-4 py-3 rounded-full text-base font-medium leading-4 bg-gray-300 text-gray-800;
+    }
+
+    .username {
+      @apply text-gray-900 underline;
+    }
+
+    .pizza {
+      @apply font-bold;
+    }
+  }
+
+  #footer {
+    @apply mt-10 mb-20 text-center text-indigo-700 text-lg;
+
+    button {
+      @apply bg-transparent font-semibold py-2 px-4 border border-indigo-500 rounded;
+    }
+
+    button:hover {
+      @apply bg-indigo-500 text-white border-transparent;
+    }
+  }
+}
