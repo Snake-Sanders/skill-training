@@ -21,6 +21,16 @@ defmodule Prag.PizzaOrders do
     Repo.all(PizzaOrder)
   end
 
+  def list_pizza_orders(page: page, per_page: per_page) do
+    query =
+      from p in PizzaOrder,
+        offset: ^((page - 1) * per_page),
+        limit: ^per_page,
+        order_by: [{:desc, :id}]
+
+    Repo.all(query)
+  end
+
   @doc """
   Gets a single pizza_order.
 
