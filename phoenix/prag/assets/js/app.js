@@ -28,15 +28,18 @@ import { LiveSocket } from "phoenix_live_view"
 import topbar from "../vendor/topbar"
 
 import InfiniteScroll from "./infinite-scroll";
+import DatePicker from "./date-picker";
 
+// PragHooks is a list of hooks custom defined.
 let PragHooks = {
     InfiniteScroll: InfiniteScroll,
+    DatePicker: DatePicker,
     // anotherHook: AnotherHook
 };
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 let liveSocket = new LiveSocket("/live", Socket, { 
-    hooks: PragHooks,
+    hooks: PragHooks, 
     params: { _csrf_token: csrfToken } 
 })
 

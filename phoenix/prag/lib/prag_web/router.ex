@@ -36,6 +36,7 @@ defmodule PragWeb.Router do
     live "/sort", SortLive
     live "/volunteers", VolunteersLive
     live "/infinite-scroll", InfiniteScrollLive
+    live "/datepicker", DatePickerLive
   end
 
   # Other scopes may use custom stacks.
