@@ -15,12 +15,10 @@ defmodule PragWeb.SandboxLive do
     <div id="sandbox">
       <.live_component module={SandboxCalculatorComponent} id="comp1" />
 
-      <%= if @weight do %>
-        <.live_component module={QuoteComponent} id="comp2"
-                          material="sand"
-                          weight={@weight}
-                          price={@price} />
-      <% end %>
+      <QuoteComponent.quote
+          material="sand"
+          weight={@weight}
+          price={@price} />
 
     </div>
     """

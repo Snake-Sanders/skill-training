@@ -1,19 +1,21 @@
 defmodule PragWeb.QuoteComponent do
-  use PragWeb, :live_component
+  use Phoenix.Component
 
   import Number.Currency
 
   @moduledoc """
-  This is a stateless component
-  first runs `mount`, then (optional) `update` and then `render`
+  Stateless component now are called `Function component`
+  and no longer has mount, it is just a funtion that renders HEEx
   """
-  def mount(socket) do
-    {:ok, assign(socket, hrs_until_expires: 2)}
-  end
 
-  def render(assigns) do
+  # {#{ if is_nil(@weight), do: :hidden} }
+  def quote(assigns) do
+    assigns = assign_new(assigns, :hrs_until_expires, fn -> 24 end)
+
     ~H"""
-    <div class="text-center p-6 border-4 border-dashed border-indigo-600">
+    <div class={" #{ if is_nil(@weight), do: "hidden" } text-center p-6 border-4 border-dashed border-indigo-600"}
+
+      >
       <h2 class="text-2xl mb-2">
       Out best deal
       </h2>
