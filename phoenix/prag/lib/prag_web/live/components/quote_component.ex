@@ -13,9 +13,7 @@ defmodule PragWeb.QuoteComponent do
     assigns = assign_new(assigns, :hrs_until_expires, fn -> 24 end)
 
     ~H"""
-    <div class={" #{ if is_nil(@weight), do: "hidden" } text-center p-6 border-4 border-dashed border-indigo-600"}
-
-      >
+    <div class="text-center p-6 border-4 border-dashed border-indigo-600">
       <h2 class="text-2xl mb-2">
       Our best deal
       </h2>

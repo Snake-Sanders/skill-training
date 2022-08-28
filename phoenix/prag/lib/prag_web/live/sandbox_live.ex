@@ -15,13 +15,14 @@ defmodule PragWeb.SandboxLive do
 
     <div id="sandbox">
       <.live_component module={SandboxCalculatorComponent} id="comp1" />
-      <.live_component module={DeliveryChargeComponent} id="comp2" />
-      <QuoteComponent.quote
-          material="sand"
-          weight={@weight}
-          price={@price}
-          charge={@charge} />
-
+      <%= if @weight do %>
+        <.live_component module={DeliveryChargeComponent} id="comp2" />
+        <QuoteComponent.quote
+            material="sand"
+            weight={@weight}
+            price={@price}
+            charge={@charge} />
+      <% end %>
     </div>
     """
   end
@@ -33,8 +34,8 @@ defmodule PragWeb.SandboxLive do
   end
 
   # def handle_info({:delivery, %{charge: charge}}, socket) do
-  def handle_info({:delivery, %{charge: c} = _params}, socket) do
-    socket = assign(socket, :charge, c )
+  def handle_info({:delivery_charge, charge}, socket) do
+    socket = assign(socket, :charge, charge )
     IO.inspect(socket, label: "yo")
     {:noreply, socket}
   end

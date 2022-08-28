@@ -25,7 +25,7 @@ defmodule PragWeb.DeliveryChargeComponent do
     charge = SandboxCalculator.calculate_delivery_charge(zip)
     socket = assign(socket, charge: charge, zip: zip)
 
-    send(self(), {:delivery, %{charge: charge}})
+    send(self(), {:delivery_charge, charge})
 
     {:noreply, socket}
   end
