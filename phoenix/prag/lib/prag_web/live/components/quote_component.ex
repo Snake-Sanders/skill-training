@@ -8,24 +8,9 @@ defmodule PragWeb.QuoteComponent do
   first runs `mount`, then (optional) `update` and then `render`
   """
   def mount(socket) do
-
     {:ok, assign(socket, hrs_until_expires: 2)}
   end
 
-  @doc """
-  `update` gets called after `mount`
-  `assigns` are all the parameters we passed to `live_component`
-  `assigns` get merged in to the `socket`
-  """
-  def update(assigns, socket) do
-    # this assignment gets executed automatically event if
-    # `update` was not defined
-    socket = assign(socket, assigns)
-
-    socket =
-      assign(socket, minutes: socket.assigns.hrs_until_expires * 60)
-    {:ok, socket}
-  end
   def render(assigns) do
     ~H"""
     <div class="text-center p-6 border-4 border-dashed border-indigo-600">
@@ -39,7 +24,6 @@ defmodule PragWeb.QuoteComponent do
       </h3>
       <div class="text-gray-600">
         expires in <%= @hrs_until_expires %> hours
-        (<%= @minutes %> minutes)
       </div>
     </div>
     """
