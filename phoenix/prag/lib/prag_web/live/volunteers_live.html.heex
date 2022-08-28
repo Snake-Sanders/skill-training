@@ -1,4 +1,8 @@
-<h1>Volunteer Check-In</h1>
+<PragWeb.HeaderComponent.render 
+  title="Volunteer Check-In" 
+  subtitle={@recent_activity}
+  />
+
 <div id="checkin">
   <.form let={f} for={@changeset} 
           phx-submit="save"
