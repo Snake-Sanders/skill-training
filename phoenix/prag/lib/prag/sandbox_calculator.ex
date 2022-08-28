@@ -17,4 +17,11 @@ defmodule Prag.SandboxCalculator do
       :error -> 0
     end
   end
+
+  def calculate_delivery_charge(zip) do
+    zip
+    |> String.split("", trim: true)
+    |> Enum.map(&to_integer/1)
+    |> Enum.reduce(0, &Kernel.+/2)
+  end
 end

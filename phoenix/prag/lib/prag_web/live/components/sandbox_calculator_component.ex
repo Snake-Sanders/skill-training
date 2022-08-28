@@ -40,7 +40,6 @@ defmodule PragWeb.SandboxCalculatorComponent do
     %{"length" => l, "width" => w, "depth" => d} = params
 
     weight = SandboxCalculator.calculate_weight(l, w, d)
-
     socket = assign(socket, length: l, width: w, depth: d, weight: weight)
 
     {:noreply, socket}
