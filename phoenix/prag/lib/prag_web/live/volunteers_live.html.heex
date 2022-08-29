@@ -4,34 +4,10 @@
   />
 
 <div id="checkin">
-  <.form let={f} for={@changeset} 
-          phx-submit="save"
-          phx-change="validate">
-
-    <div class="filed">
-      <%= text_input f, :name,
-                        placeholder: "Name",
-                        autocomplete: "off",
-                        phx_debounce: "blur"
-      %>
-      <%= error_tag f, :name %>
-    </div>
-
-    <div class="filed">
-      <%= text_input f, :phone,
-                        placeholder: "Phone",
-                        autocomplete: "off",
-                        phx_hook: "PhoneFormatter",
-                        phx_debounce: "blur"
-      %>
-      <%= error_tag f, :phone %>
-    </div>
-
-    <div class="filed">
-      <%= submit("Check In", phx_disable_with: "Saving...") %>
-    </div>
-
-  </.form>  
+  <.live_component module={PragWeb.VolunteerFormComponent} 
+                   changeset={@changeset}
+                   id="volunteer-form" />
+  
   <div id="volunteers" phx-update="prepend" >
     <%= for volunteer <- @volunteers do %>
       <.live_component module={PragWeb.VolunteerComponent} 
