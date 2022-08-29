@@ -29,11 +29,7 @@ defmodule PragWeb.SearchLive do
         </button>
       </form>
 
-      <%= if @loading do %>
-      <div class="loader">
-        Loading...
-      </div>
-      <% end %>
+      <PragWeb.LoadingComponent.render loading={@loading}/>
 
       <div class="stores">
         <ul>
@@ -98,6 +94,8 @@ defmodule PragWeb.SearchLive do
           |> clear_flash()
           |> assign(stores: stores, loading: false)
       end
+
+      :timer.sleep(1000)
 
     {:noreply, socket}
   end

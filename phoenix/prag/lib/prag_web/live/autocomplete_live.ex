@@ -53,11 +53,7 @@ defmodule PragWeb.AutocompleteLive do
           <% end %>
       </datalist>
 
-      <%= if @loading do %>
-      <div class="loader">
-        Loading...
-      </div>
-      <% end %>
+      <PragWeb.LoadingComponent.render loading={@loading} />
 
       <div class="stores">
         <ul>
@@ -140,6 +136,8 @@ defmodule PragWeb.AutocompleteLive do
           |> assign(stores: stores, loading: false)
       end
 
+    :timer.sleep(1000)
+
     {:noreply, socket}
   end
 
@@ -159,6 +157,8 @@ defmodule PragWeb.AutocompleteLive do
           |> clear_flash()
           |> assign(stores: stores, loading: false, city: city)
       end
+
+    :timer.sleep(1000)
 
     {:noreply, socket}
   end
