@@ -1,57 +1,17 @@
-<h1>Volunteer Check-In</h1>
+<PragWeb.HeaderComponent.render 
+  title="Volunteer Check-In" 
+  subtitle={@recent_activity}
+  />
+
 <div id="checkin">
-  <.form let={f} for={@changeset} 
-          phx-submit="save"
-          phx-change="validate">
-
-    <div class="filed">
-      <%= text_input f, :name,
-                        placeholder: "Name",
-                        autocomplete: "off",
-                        phx_debounce: "blur"
-      %>
-      <%= error_tag f, :name %>
-    </div>
-
-    <div class="filed">
-      <%= text_input f, :phone,
-                        placeholder: "Phone",
-                        autocomplete: "off",
-                        phx_hook: "PhoneFormatter",
-                        phx_debounce: "blur"
-      %>
-      <%= error_tag f, :phone %>
-    </div>
-
-    <div class="filed">
-      <%= submit("Check In", phx_disable_with: "Saving...") %>
-    </div>
-
-  </.form>  
-    <!--
-    by default the update is `replace`, but since we dont cache the list in the server,
-    we relay on the client to keep the list, so if a new item is added then this is prepended
-    to this list, without having to pull all the list again from DB.
-    The list and the child items need unique IDs.
-    -->
+  <.live_component module={PragWeb.VolunteerFormComponent} 
+                   id="volunteer-form" />
+  
   <div id="volunteers" phx-update="prepend" >
     <%= for volunteer <- @volunteers do %>
-      <div class={"volunteer #{if volunteer.checked_out, do: "out"}"} id={Integer.to_string(volunteer.id)} >
-        <div class="name">
-          <%= volunteer.name %>
-        </div>
-        <div class="phone">
-          <img src="images/phone.svg">
-          <%= volunteer.phone %>
-        </div>
-        <div class="status">
-            <button phx-click="toggle-status"
-                    phx-value-id={volunteer.id}
-                    phx-disable-with="Saving...">
-            <%= if volunteer.checked_out, do: "Check In", else: "Check Out" %>    
-            </button>
-        </div>
-      </div>
+      <.live_component module={PragWeb.VolunteerComponent} 
+                       volunteer={volunteer} 
+                       id={volunteer.id}/>
     <% end %>
   </div>
 </div>

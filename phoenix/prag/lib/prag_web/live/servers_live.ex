@@ -37,15 +37,12 @@ defmodule PragWeb.ServersLive do
       IO.puts("-- handle_params(action :new) : #{inspect(self())}")
 
       # The live_action is "new", so the form is being
-      # displayed. Therefore, assign an empty changeset
-      # for the form. Also don't show the selected
+      # displayed. Also don't show the selected
       # server in the sidebar which would be confusing.
-      changeset = Servers.change_server(%Server{})
 
       socket =
         assign(socket,
-          selected_server: nil,
-          changeset: changeset
+          selected_server: nil
         )
 
       {:noreply, socket}
@@ -65,60 +62,6 @@ defmodule PragWeb.ServersLive do
 
       {:noreply, socket}
     end
-  end
-
-  # the data from the form arrives as a Map with the format, as in the example below:
-  # %{"server" =>
-  #    %{ "framework" => "Java",
-  #       "git_repo" => "http/git.com",
-  #       "name" => "apache",
-  #       "size" => "299"
-  #     }
-  # }
-  # Question: Does the main key is called "server" because the form is create based on the changeset
-  # which is %Server{}
-  def handle_event("save", %{"server" => attrs}, socket) do
-    # retrieve the data from the Server Form
-    # store it in the DB and append it to the list on the client side.
-    # if it fails storing into DB it returns the changeset so the form data is not lost.
-    case Servers.create_server(attrs) do
-      {:ok, server} ->
-        socket =
-          socket
-          # this "redirection" will be handled by handle_param, be sure that matches the right clause.
-          # for this we need the name, otherwise will take the default clause where the selected_server is nil.
-          |> push_patch(
-            to: Routes.live_path(socket, __MODULE__, id: server.id, name: server.name)
-          )
-
-        {:noreply, socket}
-
-      {:error, %Ecto.Changeset{} = changeset} ->
-        IO.puts("-- handle_event(save) failed storing in DB : #{inspect(self())}")
-        socket = assign(socket, changeset: changeset)
-
-        {:noreply, socket}
-    end
-  end
-
-  def handle_event("validate", %{"server" => attrs}, socket) do
-    changeset =
-      %Server{}
-      |> Servers.change_server(attrs)
-      |> Map.put(:action, :insert)
-
-    socket = assign(socket, changeset: changeset)
-
-    {:noreply, socket}
-  end
-
-  def handle_event("toggle-status", %{"id" => id}, socket) do
-    server = Servers.get_server!(id)
-    new_status = if server.status == "up", do: "down", else: "up"
-
-    {:ok, _server} = Servers.update_server(server, %{status: new_status})
-
-    {:noreply, socket}
   end
 
   def handle_info({:server_created, server}, socket) do
