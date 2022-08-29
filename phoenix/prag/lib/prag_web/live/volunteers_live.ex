@@ -55,15 +55,6 @@ defmodule PragWeb.VolunteersLive do
     {:noreply, socket}
   end
 
-  # here we can capture the `id` because in the buttom we use phx-value-id
-  def handle_event("toggle-status", %{"id" => id}, socket) do
-    volunteer = Volunteers.get_volunteer!(id)
-
-    {:ok, _volunteer} = Volunteers.toggle_status_volunteer(volunteer)
-
-    {:noreply, socket}
-  end
-
   def handle_info({:volunteer_created, volunteer}, socket) do
     # this changes are reflected to the client with preprend event
     socket = update(socket, :volunteers, fn volunteers -> [volunteer | volunteers] end)
