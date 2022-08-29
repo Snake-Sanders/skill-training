@@ -45,4 +45,21 @@ defmodule PragWeb.LightLiveTest do
     # the previous test: 100% was overwritten with 0% we check that:
     refute render(view) =~ "100%"
   end
+
+  test "min brightness is 0%", %{conn: conn} do
+    {:ok, view, _html} = live(conn, "/light")
+
+    assert view |> element("button", "Off") |> render_click() =~ "0%"
+    refute render(view) =~ "100%"
+    # try to push further 100% should remain in the max value
+    assert view |> element("button", "Down") |> render_click() =~ "0%"
+  end
+
+  test "max brightness", %{conn: conn} do
+    {:ok, view, _html} = live(conn, "/light")
+
+    assert view |> element("button", "On") |> render_click() =~ "100%"
+    # try to push further 100% should remain in the max value
+    assert view |> element("button", "Up") |> render_click() =~ "100%"
+  end
 end
