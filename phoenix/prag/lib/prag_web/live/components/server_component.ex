@@ -1,6 +1,8 @@
 defmodule PragWeb.ServerComponent do
   use PragWeb, :live_component
 
+  alias Prag.Servers
+
   def render(assigns) do
     ~H"""
     <div class="card">
@@ -9,6 +11,7 @@ defmodule PragWeb.ServerComponent do
         <button class={@selected_server.status}
                 href="#"
                 phx-click="toggle-status"
+                phx-target={@myself}
                 phx-value-id={@selected_server.id}
                 phx_disable_with="Saving...">
           <%= @selected_server.status %>
@@ -39,5 +42,14 @@ defmodule PragWeb.ServerComponent do
       </div>
     </div>
     """
+  end
+
+  def handle_event("toggle-status", %{"id" => id}, socket) do
+    server = Servers.get_server!(id)
+    new_status = if server.status == "up", do: "down", else: "up"
+
+    {:ok, _server} = Servers.update_server(server, %{status: new_status})
+
+    {:noreply, socket}
   end
 end

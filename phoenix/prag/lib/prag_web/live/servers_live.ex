@@ -112,15 +112,6 @@ defmodule PragWeb.ServersLive do
     {:noreply, socket}
   end
 
-  def handle_event("toggle-status", %{"id" => id}, socket) do
-    server = Servers.get_server!(id)
-    new_status = if server.status == "up", do: "down", else: "up"
-
-    {:ok, _server} = Servers.update_server(server, %{status: new_status})
-
-    {:noreply, socket}
-  end
-
   def handle_info({:server_created, server}, socket) do
     IO.puts("-- handle_info(:server_created) #{server.name}: #{inspect(self())}")
 
