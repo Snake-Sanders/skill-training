@@ -27,10 +27,8 @@
   </div>
   <div class="main">
     <div class="wrapper">
-      <!-- TODO: move changeset to component -->
       <%= if @live_action == :new do  %>
         <.live_component module={PragWeb.ServerFormComponent}
-                         changeset={@changeset} 
                          id="server-form"/>
       <% else %>
         <.live_component  module={PragWeb.ServerComponent}
