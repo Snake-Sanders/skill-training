@@ -12,7 +12,6 @@ defmodule PragWeb.VolunteersLive do
     socket =
       assign(socket,
         volunteers: volunteers,
-        changeset: Volunteers.change_volunteer(%Volunteer{}),
         recent_activity: ""
       )
 

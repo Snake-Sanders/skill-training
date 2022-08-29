@@ -3,6 +3,11 @@ defmodule PragWeb.VolunteerFormComponent do
   alias Prag.Volunteers
   alias Prag.Volunteers.Volunteer
 
+  def mount(socket) do
+    changeset = Volunteers.change_volunteer(%Volunteer{})
+    {:ok, assign(socket, changeset: changeset)}
+  end
+
   def render(assigns) do
     ~H"""
     <div>
@@ -39,11 +44,10 @@ defmodule PragWeb.VolunteerFormComponent do
     """
   end
 
-  @spec handle_event(<<_::32, _::_*32>>, map, any) :: {:noreply, any}
   def handle_event("save", %{"volunteer" => params}, socket) do
     # `create_volunteer` will try to insert a new item in the DB with the content of params
     case Volunteers.create_volunteer(params) do
-      {:ok, volunteer} ->
+      {:ok, _volunteer} ->
         # when the item was inserted in the database:
         # updates the list of volunteers without having to render all the list again.
         # when volunteer is created there is a new event handled by handle_info
