@@ -21,18 +21,26 @@ defmodule PragWeb.VolunteersLive do
 
   def handle_info({:volunteer_created, volunteer}, socket) do
     # this changes are reflected to the client with preprend event
-    socket = update(socket, :volunteers, fn volunteers -> [volunteer | volunteers] end)
+    socket =
+      socket
+      |> update(:volunteers, fn volunteers -> [volunteer | volunteers] end)
+      |> update_recent_activity(volunteer)
 
     {:noreply, socket}
   end
 
   def handle_info({:volunteer_updated, volunteer}, socket) do
     # this changes are reflected to the client with preprend event
-    socket = update(socket, :volunteers, fn volunteers -> [volunteer | volunteers] end)
-
-    socket = assign(socket, recent_activity: "#{volunteer.name} checked
-                    #{if volunteer.checked_out, do: "out", else: "in"}!")
+    socket =
+      socket
+      |> update(:volunteers, fn volunteers -> [volunteer | volunteers] end)
+      |> update_recent_activity(volunteer)
 
     {:noreply, socket}
+  end
+
+  defp update_recent_activity(socket, volunteer) do
+    assign(socket, recent_activity: "#{volunteer.name} checked
+                #{if volunteer.checked_out, do: "out", else: "in"}!")
   end
 end
