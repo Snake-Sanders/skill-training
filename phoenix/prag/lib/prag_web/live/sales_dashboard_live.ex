@@ -32,7 +32,7 @@ defmodule PragWeb.SalesDashboardLive do
             New Orders
           </span>
         </div>
-        <div class="stat">
+        <div id="sales-amount" class="stat">
           <span class="value">
             $<%= @sales_amount %>
           </span>
@@ -49,7 +49,7 @@ defmodule PragWeb.SalesDashboardLive do
           </span>
         </div>
       </div>
-      <button phx-click="refresh">
+      <button id="refresh" phx-click="refresh">
         <img src="images/refresh.svg">
         Refresh
       </button>
