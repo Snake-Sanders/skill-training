@@ -64,7 +64,7 @@ defmodule PragWeb.SerachLiveTest do
     |> form("#zip-search", %{zip: "80000"})
     |> render_submit()
 
-    open_browser(view)
+    # open_browser(view)
 
     assert has_element?(view, "p", "No stores matching")
   end

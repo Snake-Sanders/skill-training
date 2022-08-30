@@ -32,7 +32,7 @@ defmodule PragWeb.AutocompleteLive do
         </button>
       </form>
 
-      <form phx-submit="city-search" phx-change="suggest-city">
+      <form id="city-search" phx-submit="city-search" phx-change="suggest-city">
         <input type="text" name="city" value={"#{@city}"}
                 placeholder="City"
                 autocomplete="off"
