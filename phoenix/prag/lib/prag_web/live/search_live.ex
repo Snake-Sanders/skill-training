@@ -18,7 +18,7 @@ defmodule PragWeb.SearchLive do
     <h1>Find a Store</h1>
     <div id="search">
 
-      <form phx-submit="zip-search">
+      <form id="zip-search" phx-submit="zip-search">
         <input type="text" name="zip" value={"#{@zip}"}
                 placeholder="Zip Code"
                 autofocus autocomplete="off"
@@ -34,7 +34,7 @@ defmodule PragWeb.SearchLive do
       <div class="stores">
         <ul>
           <%= for store <- @stores do %>
-            <li>
+            <li id={"store-#{store.id}"}>
               <div class="first-line">
                 <div class="name">
                   <%= store.name %>
