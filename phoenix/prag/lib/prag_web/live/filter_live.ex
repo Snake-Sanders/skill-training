@@ -22,32 +22,32 @@ defmodule PragWeb.FilterLive do
     ~H"""
     <h1>Daily Boat Rentals</h1>
     <div id="filter">
-    <form phx-change="filter">
-      <div class="filters">
+      <form id="change-filter" phx-change="filter">
+        <div class="filters">
 
-        <select name="type">
-          <%= options_for_select(type_options(), @type) %>
-        </select>
+          <select name="type">
+            <%= options_for_select(type_options(), @type) %>
+          </select>
 
-        <div class="prices">
-          <input type="hidden" name="prices[]" value="">
-          <%= for price <- ["$", "$$", "$$$" ] do %>
-            <%= price_checkbox(price: price, checked: price in @prices) %>
-          <% end %>
+          <div class="prices">
+            <input type="hidden" name="prices[]" value="">
+            <%= for price <- ["$", "$$", "$$$" ] do %>
+              <%= price_checkbox(price: price, checked: price in @prices) %>
+            <% end %>
+          </div>
+
+          <%= live_patch "Clear All",
+              to: Routes.live_path(@socket, PragWeb.FilterLive, %{"action" => "clear_all"})
+          %>
+          <a href="#" phx-click="clear">Reset view</a>
         </div>
-
-        <%= live_patch "Clear All",
-            to: Routes.live_path(@socket, PragWeb.FilterLive, %{"action" => "clear_all"})
-        %>
-        <a href="#" phx-click="clear">Reset view</a>
-      </div>
-    </form>
+      </form>
 
     <span>Items: <%= length(@boats) %> </span>
 
     <div class="boats">
         <%= for boat <- @boats do %>
-          <div class="card">
+          <div id={"boat-#{boat.id}"} class="card">
             <img src={boat.image}>
             <div class="content">
               <div class="model">

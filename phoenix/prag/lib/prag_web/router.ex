@@ -38,6 +38,7 @@ defmodule PragWeb.Router do
     live "/infinite-scroll", InfiniteScrollLive
     live "/datepicker", DatePickerLive
     live "/sandbox", SandboxLive
+    live "/rocket-launch", RocketLaunchLive
   end
 
   # Other scopes may use custom stacks.

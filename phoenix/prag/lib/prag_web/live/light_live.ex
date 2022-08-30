@@ -11,7 +11,7 @@ defmodule PragWeb.LightLive do
     ~H"""
     <h1>Front Porch Light</h1>
     <div id="light">
-      <div class="meter">
+      <div role="progressbar" class="meter">
         <span style={"width: #{@brightness}%; background-color: #{temp_color(@meter_color)}"} >
           <%= @brightness %>%
         </span>
@@ -19,22 +19,26 @@ defmodule PragWeb.LightLive do
 
       <button phx-click="off">
         <img src="images/light-off.svg">
+        <span class="sr-only">Off</span>
       </button>
 
       <button phx-click="down">
         <img src="images/down.svg">
+        <span class="sr-only">Down</span>
       </button>
 
       <button phx-click="up">
         <img src="images/up.svg">
+        <span class="sr-only">Up</span>
       </button>
 
       <button phx-click="on">
         <img src="images/light-on.svg">
+        <span class="sr-only">On</span>
       </button>
 
       <button phx-click="random">
-        <span>Light Me Up!</span>
+        <span>Light Me up!</span>
       </button>
 
       <form phx-change="power">
