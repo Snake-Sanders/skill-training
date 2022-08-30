@@ -62,4 +62,20 @@ defmodule PragWeb.LightLiveTest do
     # try to push further 100% should remain in the max value
     assert view |> element("button", "Up") |> render_click() =~ "100%"
   end
+
+  test "progressbar indicates brightness in %", %{conn: conn} do
+    {:ok, view, _html} = live(conn, "/light")
+
+    # checks that the progressbar is there
+    assert has_element?(view, "[role=progressbar]")
+
+    # change the brightness to 100%
+    element(view, "button", "On") |> render_click()
+    # change the brightness to 90%
+    element(view, "button", "Down") |> render_click()
+
+    assert view
+           |> element("[role=progressbar]")
+           |> render() =~ "90%"
+  end
 end

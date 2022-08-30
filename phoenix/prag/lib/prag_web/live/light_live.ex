@@ -11,7 +11,7 @@ defmodule PragWeb.LightLive do
     ~H"""
     <h1>Front Porch Light</h1>
     <div id="light">
-      <div class="meter">
+      <div role="progressbar" class="meter">
         <span style={"width: #{@brightness}%; background-color: #{temp_color(@meter_color)}"} >
           <%= @brightness %>%
         </span>

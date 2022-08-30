@@ -30,18 +30,18 @@ defmodule PragWeb.LicenseLive do
     <div id="license">
       <div class="card">
         <div class="content">
-          <div class="seats">
+          <div id="seats" class="seats">
             <img src="images/license.svg">
             <span>
               Your license is currently for
               <strong><%= @seats %></strong> seats.
             </span>
           </div>
-          <form phx-change="update" phx-debounce="250">
+          <form id="update-seats" phx-change="update" phx-debounce="250">
             <input type="range" min="1" max="10"
           name="seats" value={"#{@seats}"} />
           </form>
-          <div class="amount">
+          <div id="amount" class="amount">
             <%= number_to_currency(@amount) %>
           </div>
         </div>
