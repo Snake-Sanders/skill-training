@@ -52,7 +52,6 @@ defmodule PragWeb.SalesDashboardLiveTest do
       render(view)
       |> get_text_for_selector("#sales-amount")
 
-    IO.inspect(after_refresh)
     refute before_refresh =~ after_refresh
   end
 end

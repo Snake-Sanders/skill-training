@@ -14,26 +14,31 @@
       )%>
       
       <%= for server <- @servers do %>
-        <%= live_patch link_body(server, "name"),
-            to: Routes.live_path(@socket,
-                                __MODULE__, 
-                                name: server.name,
-                                id: server.id),
-            replace: true,
-            class: if server == @selected_server, do: "active"
-        %>
+        <div id={"server-#{server.id}"}>
+          <%= live_patch link_body(server, "name"),
+              to: Routes.live_path(@socket,
+                                  __MODULE__, 
+                                  name: server.name,
+                                  id: server.id),
+              replace: true,
+              class: if server == @selected_server, do: "active"
+          %>
+        </div>
     <% end %>
     </nav>
   </div>
-  <div class="main">
+  <div class="main" id="selected-server">
     <div class="wrapper">
       <%= if @live_action == :new do  %>
         <.live_component module={PragWeb.ServerFormComponent}
-                         id="server-form"/>
+                         id="server-form-comp"/>
+      <% end %>
+      <%= if (@live_action != :new) and (not is_nil(@selected_server)) do %>
+          <.live_component  module={PragWeb.ServerComponent}
+                            selected_server={@selected_server}
+                          id={@selected_server.id} />
       <% else %>
-        <.live_component  module={PragWeb.ServerComponent}
-                          selected_server={@selected_server}
-                         id={@selected_server.id} />
+        <p>No server selected.</p>
       <% end %>
     </div>
   </div>

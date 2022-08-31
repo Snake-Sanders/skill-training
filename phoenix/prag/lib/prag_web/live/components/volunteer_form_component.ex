@@ -12,9 +12,11 @@ defmodule PragWeb.VolunteerFormComponent do
     ~H"""
     <div>
     <.form let={f} for={@changeset}
+          id="create-volunteer"
           phx-submit="save"
           phx-change="validate"
-          phx-target={@myself}>
+          phx-target={@myself}
+          >
 
       <div class="filed">
         <%= text_input f, :name,

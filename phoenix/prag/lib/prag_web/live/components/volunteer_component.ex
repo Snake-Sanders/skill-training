@@ -4,7 +4,8 @@ defmodule PragWeb.VolunteerComponent do
 
   def render(assigns) do
     ~H"""
-    <div class={"volunteer #{if @volunteer.checked_out, do: "out"}"} id={Integer.to_string(@volunteer.id)} >
+    <div class={"volunteer #{if @volunteer.checked_out, do: "out"}"}
+                id={"volunteer-#{Integer.to_string(@volunteer.id)}"} >
       <div class="name">
         <%= @volunteer.name %>
       </div>

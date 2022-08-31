@@ -1,7 +1,6 @@
 defmodule PragWeb.ServersLive do
   use PragWeb, :live_view
   alias Prag.Servers
-  alias Prag.Servers.Server
 
   def mount(_param, _session, socket) do
     if connected?(socket), do: Servers.subscribe()
@@ -34,7 +33,7 @@ defmodule PragWeb.ServersLive do
   # based on whether the action is "new" or not.
   def handle_params(_params, _url, socket) do
     if socket.assigns.live_action == :new do
-      IO.puts("-- handle_params(action :new) : #{inspect(self())}")
+      # IO.puts("-- handle_params(action :new) : #{inspect(self())}")
 
       # The live_action is "new", so the form is being
       # displayed. Also don't show the selected
@@ -47,10 +46,6 @@ defmodule PragWeb.ServersLive do
 
       {:noreply, socket}
     else
-      IO.puts(
-        "-- handle_params(action #{inspect(socket.assigns.live_action)}) : #{inspect(self())}"
-      )
-
       # The live_action is NOT "new", so the form
       # is NOT being displayed. Therefore, don't assign
       # an empty changeset. Instead, just select the
@@ -58,14 +53,20 @@ defmodule PragWeb.ServersLive do
       # in "mount", but since "handle_params" is always
       # invoked after "mount", we decided to select the
       # default server here instead of in "mount".
-      socket = assign(socket, selected_server: hd(socket.assigns.servers))
+      selected_server =
+        case socket.assigns.servers do
+          [] -> nil
+          [first| _] -> first
+        end
+
+      socket = assign(socket, selected_server: selected_server)
 
       {:noreply, socket}
     end
   end
 
   def handle_info({:server_created, server}, socket) do
-    IO.puts("-- handle_info(:server_created) #{server.name}: #{inspect(self())}")
+    # IO.puts("-- handle_info(:server_created) #{server.name}: #{inspect(self())}")
 
     socket =
       socket
@@ -75,7 +76,7 @@ defmodule PragWeb.ServersLive do
   end
 
   def handle_info({:server_updated, server}, socket) do
-    IO.puts("-- handle_info(:server_updated) #{server.name}: #{inspect(self())}")
+    # IO.puts("-- handle_info(:server_updated) #{server.name}: #{inspect(self())}")
 
     curr_selected = socket.assigns.selected_server
     update_selected = !is_nil(curr_selected) and curr_selected.id == server.id
