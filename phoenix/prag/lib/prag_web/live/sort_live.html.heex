@@ -16,13 +16,13 @@
     <table>
       <thead>
         <tr>
-          <th class="item">
+          <th id="sort-by-item" class="item">
             <%= sort_link(@socket, "Items", :item, @options) %>
           </th>
-          <th>
+          <th id="sort-by-quantity">
             <%= sort_link(@socket, "Quantity", :quantity, @options) %>
           </th>
-          <th>
+          <th id="sort-by-expiration">
             <%= sort_link(@socket, "Days Until Expires", :days_until_expires, @options) %>
           </th>
         </tr>
