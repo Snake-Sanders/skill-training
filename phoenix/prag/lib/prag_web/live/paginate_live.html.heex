@@ -4,7 +4,7 @@
 </div>
 
 <div id="donations">
-  <form phx-change="select-per-page">
+  <form id="select-per-page" phx-change="select-per-page">
     Show
     <select name="per-page">
       <%= options_for_select([5, 10, 15, 20], @options.per_page) %>
@@ -48,7 +48,7 @@
     </table>
 
     <div class="footer">
-      <div class="pagination">
+      <div id="pag-buttons" class="pagination">
         <%= if @options.page > 1 do %>
           <%=  pagination_link(@socket, 
                               "Previous",
