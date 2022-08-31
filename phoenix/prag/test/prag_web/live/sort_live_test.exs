@@ -15,6 +15,10 @@ defmodule PragWeb.SortLiveTest do
     donation
   end
 
+  defp sort_path(sort_by, sort_order) do
+    "/sort?" <> "sort_by=#{sort_by}&sort_order=#{sort_order}&page=1&per_page=5"
+  end
+
   test "checks items are sorted by", %{conn: conn} do
     max_el = 5
 
@@ -36,25 +40,25 @@ defmodule PragWeb.SortLiveTest do
     element(view, "#sort-by-item a")
     |> render_click()
 
-    assert_patch(view, "/sort?sort_by=item&sort_order=desc&page=1&per_page=5")
+    assert_patch(view, sort_path("item", "desc"))
 
     # asc sort by item:
     element(view, "#sort-by-item a")
     |> render_click()
 
-    assert_patch(view, "/sort?sort_by=item&sort_order=asc&page=1&per_page=5")
+    assert_patch(view, sort_path("item", "asc"))
 
     # sort by quantity:
     element(view, "#sort-by-quantity a")
     |> render_click()
 
-    assert_patch(view, "/sort?sort_by=quantity&sort_order=desc&page=1&per_page=5")
+    assert_patch(view, sort_path("quantity", "desc"))
 
     # asc sort by expiration:
     element(view, "#sort-by-expiration a")
     |> render_click()
 
-    assert_patch(view, "/sort?sort_by=days_until_expires&sort_order=asc&page=1&per_page=5")
+    assert_patch(view, sort_path("days_until_expires", "asc"))
   end
 
   test "sorts items according to the sort_order and sort_by options in the URL", %{conn: conn} do
@@ -84,6 +88,5 @@ defmodule PragWeb.SortLiveTest do
       |> Regex.compile!("s")
 
     assert String.match?(render(view), re)
-    # assert render(view) =~r/names/
   end
 end
