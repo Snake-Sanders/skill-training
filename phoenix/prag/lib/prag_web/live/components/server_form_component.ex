@@ -17,7 +17,9 @@ defmodule PragWeb.ServerFormComponent do
       <.form let={f} for={@changeset}
               phx-submit="save"
               phx-target={@myself}
-              phx-change="validate">
+              phx-change="validate"
+              id="server-form">
+
           <div class="field">
             <%= label f, :name %>
             <%= text_input f, :name, phx_debounce: "blur" %>

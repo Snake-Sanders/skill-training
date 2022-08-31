@@ -41,6 +41,78 @@ defmodule PragWeb.ServersLiveTest do
     assert has_element?(view, "#selected-server", server_2.name)
   end
 
+  test "todo test", %{conn: conn} do
+    {:ok, view, _html} = live(conn, "/servers/new")
+
+    valid_attrs = %{
+      name: "MailServer",
+      framework: "Elixir",
+      size: 1.0,
+      git_repo: "http://git.com"
+    }
+
+    view
+    |> form("#server-form", %{server: valid_attrs})
+    |> render_submit()
+
+    assert has_element?(view, "nav", valid_attrs.name)
+  end
+
+  test "displays live validation", %{conn: conn} do
+    {:ok, view, _html} = live(conn, "/servers/new")
+
+    valid_attrs = %{
+      # `name` can't be blank
+      name: "",
+      framework: "Elixir",
+      size: 1.0,
+      git_repo: "http://git.com"
+    }
+
+    view
+    |> form("#server-form", %{server: valid_attrs})
+    |> render_change()
+
+    # IO.inspect(render(view))
+    assert has_element?(view, "#server-form", "can't be blank")
+  end
+
+  test "clicking a button toggles status", %{conn: conn} do
+    server = create_server("Mail")
+    _server_2 = create_server("Web")
+
+    {:ok, view, _html} = live(conn, "/servers")
+
+    status_button = "#server-#{server.id} a"
+
+    view
+    |> element(status_button)
+    |> render_click()
+
+    # turn down
+    view
+    |> element("button", "up")
+    |> render_click()
+
+    assert has_element?(view, "button", "down")
+
+    # turn up
+    view
+    |> element("button", "down")
+    |> render_click()
+
+    assert has_element?(view, "button", "up")
+  end
+
+  test "receive real-time server updates", %{conn: conn} do
+    {:ok, view, _html} = live(conn, "/servers")
+
+    external_volunteer = create_server("Data-Backup")
+
+    assert has_element?(view, "nav", external_volunteer.name)
+    # open_browser(view)
+  end
+
   defp get_server_url(server) do
     "name=#{server.name}&id=#{server.id}"
   end
