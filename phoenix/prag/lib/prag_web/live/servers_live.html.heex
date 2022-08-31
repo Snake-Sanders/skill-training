@@ -30,10 +30,13 @@
       <%= if @live_action == :new do  %>
         <.live_component module={PragWeb.ServerFormComponent}
                          id="server-form"/>
+      <% end %>
+      <%= if (@live_action != :new) and (not is_nil(@selected_server)) do %>
+          <.live_component  module={PragWeb.ServerComponent}
+                            selected_server={@selected_server}
+                          id={@selected_server.id} />
       <% else %>
-        <.live_component  module={PragWeb.ServerComponent}
-                          selected_server={@selected_server}
-                         id={@selected_server.id} />
+        <p>No server selected.</p>
       <% end %>
     </div>
   </div>

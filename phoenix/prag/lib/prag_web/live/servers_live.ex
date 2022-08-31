@@ -53,7 +53,13 @@ defmodule PragWeb.ServersLive do
       # in "mount", but since "handle_params" is always
       # invoked after "mount", we decided to select the
       # default server here instead of in "mount".
-      socket = assign(socket, selected_server: hd(socket.assigns.servers))
+      selected_server =
+        case socket.assigns.servers do
+          [] -> nil
+          [first| _] -> first
+        end
+
+      socket = assign(socket, selected_server: selected_server)
 
       {:noreply, socket}
     end
