@@ -25,7 +25,7 @@
     <% end %>
     </nav>
   </div>
-  <div class="main">
+  <div class="main" id="selected-server">
     <div class="wrapper">
       <%= if @live_action == :new do  %>
         <.live_component module={PragWeb.ServerFormComponent}
