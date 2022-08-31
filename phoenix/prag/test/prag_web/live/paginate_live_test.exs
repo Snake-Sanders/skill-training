@@ -87,7 +87,7 @@ defmodule PragWeb.PaginateLiveTest do
   end
 
   test "patches the URL as expected when the user changes the per-page form", %{conn: conn} do
-    donations = Enum.map(1..5, fn id -> create_donations("fish-#{id}") end)
+    _donations = Enum.map(1..5, fn id -> create_donations("fish-#{id}") end)
 
     {:ok, view, _html} = live(conn, "/paginate")
 
