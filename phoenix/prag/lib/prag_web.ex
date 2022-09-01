@@ -47,6 +47,9 @@ defmodule PragWeb do
       use Phoenix.LiveView,
         layout: {PragWeb.LayoutView, "live.html"}
 
+      # This import makes LiveHelpers available in all the LiveView modules
+      import PragWeb.LiveHelpers
+
       unquote(view_helpers())
     end
   end
