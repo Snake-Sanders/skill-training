@@ -21,12 +21,12 @@ defmodule Prag.VolunteersTest do
     end
 
     test "create_volunteer/1 with valid data creates a volunteer" do
-      valid_attrs = %{checked_out: true, name: "some name", phone: "some phone"}
+      valid_attrs = %{checked_out: true, name: "some name", phone: "777 123 1234"}
 
       assert {:ok, %Volunteer{} = volunteer} = Volunteers.create_volunteer(valid_attrs)
       assert volunteer.checked_out == true
       assert volunteer.name == "some name"
-      assert volunteer.phone == "some phone"
+      assert volunteer.phone == "777 123 1234"
     end
 
     test "create_volunteer/1 with invalid data returns error changeset" do
@@ -35,12 +35,12 @@ defmodule Prag.VolunteersTest do
 
     test "update_volunteer/2 with valid data updates the volunteer" do
       volunteer = volunteer_fixture()
-      update_attrs = %{checked_out: false, name: "some updated name", phone: "some updated phone"}
+      update_attrs = %{checked_out: false, name: "some updated name", phone: "777 123 1234"}
 
       assert {:ok, %Volunteer{} = volunteer} = Volunteers.update_volunteer(volunteer, update_attrs)
       assert volunteer.checked_out == false
       assert volunteer.name == "some updated name"
-      assert volunteer.phone == "some updated phone"
+      assert volunteer.phone == "777 123 1234"
     end
 
     test "update_volunteer/2 with invalid data returns error changeset" do
