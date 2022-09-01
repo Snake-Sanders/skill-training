@@ -1082,3 +1082,148 @@ li:hover {
      box-shadow: 0 2.5em 0 0;
    }
  }
+
+ .auth {
+  @apply px-6 mt-8 mx-auto w-full max-w-md;
+
+  h3 {
+    @apply mt-6 mb-2 text-xl font-bold text-gray-900;
+  }
+
+  form {
+    @apply bg-white px-10 py-8 mb-6 shadow rounded-lg;
+
+    @apply px-6 mt-8 mx-auto w-full max-w-md;
+
+    label {
+      @apply block mb-2 text-sm font-medium text-gray-700;
+    }
+
+    input[type="email"],
+    input[type="password"] {
+      @apply mb-4 appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md transition duration-150 ease-in-out text-sm;
+    }
+
+    input[type="email"]:focus,
+    input[type="password"]:focus {
+      @apply outline-none ring ring-indigo-300 border-indigo-300;
+    }
+
+    .checkbox-field {
+      @apply flex items-center mb-4;
+
+      input[type="checkbox"] {
+        @apply m-0 h-4 w-4 text-gray-700 transition duration-150 ease-in-out;
+      }
+
+      label {
+        @apply m-0 ml-2;
+      }
+    }
+
+    button {
+      @apply mt-2 w-full py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 transition duration-150 ease-in-out;
+    }
+
+    button:focus {
+      @apply outline-none border-indigo-700 ring ring-indigo-300;
+    }
+
+    button:active {
+      @apply bg-indigo-700;
+    }
+
+    button:hover {
+      @apply bg-indigo-500;
+    }
+  }
+}
+
+/* Top Secret */
+
+#top-secret {
+  @apply flex items-center justify-center py-10;
+
+  img {
+    @apply w-40 mr-8;
+  }
+
+  .mission {
+    @apply text-center;
+
+    h2 {
+      @apply text-3xl text-gray-600 mb-2 font-bold;
+    }
+
+    h3 {
+      @apply text-3xl font-bold mb-2 text-indigo-600;
+    }
+
+    p {
+      @apply text-3xl text-gray-600 mb-2;
+    }
+  }
+}
+
+/* Charting */
+
+#charting {
+  button {
+    @apply mt-6 bg-indigo-500 text-white font-medium py-2 px-4 rounded outline-none;
+  }
+
+  button:hover {
+    @apply bg-indigo-700;
+  }
+
+  button:active {
+    @apply bg-indigo-500;
+  }
+}
+
+/* Mapping */
+
+#mapping {
+  @apply flex;
+
+  .sidebar {
+    @apply w-1/3 overflow-auto;
+    height: 650px;
+
+    .incident {
+      @apply p-4 border-b border-gray-300 bg-white text-gray-800 font-bold text-base;
+    }
+
+    .incident:hover {
+      @apply cursor-pointer bg-indigo-200;
+    }
+
+    .incident.selected {
+      @apply bg-yellow-100;
+    }
+  }
+
+  .main {
+    @apply w-2/3 ml-6;
+
+    #map {
+      height: 650px;
+    }
+
+    .leaflet-popup-content-wrapper .leaflet-popup-content {
+      @apply text-base;
+    }
+
+    button {
+      @apply mt-6 bg-indigo-500 text-white font-medium py-2 px-4 rounded outline-none;
+    }
+
+    button:hover {
+      @apply bg-indigo-700;
+    }
+
+    button:active {
+      @apply bg-indigo-500;
+    }
+  }
+}
