@@ -13,7 +13,7 @@ defmodule Prag.VolunteersFixtures do
       |> Enum.into(%{
         checked_out: true,
         name: "some name",
-        phone: "some phone"
+        phone: "777 123 4444"
       })
       |> Prag.Volunteers.create_volunteer()
 

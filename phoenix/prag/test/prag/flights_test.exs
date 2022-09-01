@@ -24,8 +24,8 @@ defmodule Prag.FlightsTest do
       valid_attrs = %{arrival_time: ~N[2022-08-18 13:08:00], departure_time: ~N[2022-08-18 13:08:00], destination: "some destination", number: "some number", origin: "some origin"}
 
       assert {:ok, %Flight{} = flight} = Flights.create_flight(valid_attrs)
-      assert flight.arrival_time == ~N[2022-08-18 13:08:00]
-      assert flight.departure_time == ~N[2022-08-18 13:08:00]
+      assert flight.arrival_time == ~U[2022-08-18 13:08:00.000000Z] # it should use Naive time ~N[2022-08-19 13:08:00]
+      assert flight.departure_time == ~U[2022-08-18 13:08:00.000000Z]
       assert flight.destination == "some destination"
       assert flight.number == "some number"
       assert flight.origin == "some origin"
@@ -40,8 +40,8 @@ defmodule Prag.FlightsTest do
       update_attrs = %{arrival_time: ~N[2022-08-19 13:08:00], departure_time: ~N[2022-08-19 13:08:00], destination: "some updated destination", number: "some updated number", origin: "some updated origin"}
 
       assert {:ok, %Flight{} = flight} = Flights.update_flight(flight, update_attrs)
-      assert flight.arrival_time == ~N[2022-08-19 13:08:00]
-      assert flight.departure_time == ~N[2022-08-19 13:08:00]
+      assert flight.arrival_time == ~U[2022-08-19 13:08:00.000000Z] # it should use Naive time ~N[2022-08-19 13:08:00]
+      assert flight.departure_time == ~U[2022-08-19 13:08:00.000000Z]
       assert flight.destination == "some updated destination"
       assert flight.number == "some updated number"
       assert flight.origin == "some updated origin"
