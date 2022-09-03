@@ -21,4 +21,9 @@ defmodule PragWeb.LiveHelpers do
     IO.puts("++ Assigning current user #{inspect user} ")
     assign_new(socket, :current_user, fn -> user end)
   end
+
+  def render(assigns) do
+    ~H"""
+    """
+  end
 end
