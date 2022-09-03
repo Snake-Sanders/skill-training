@@ -3,6 +3,18 @@
   <p class="font-medium tracking-widest text-xl text-center bg-indigo-500 text-gray-100" >LiveView examples list</p>
 
   <ul class="examples">
+    
+    <h3 class="text-xxl shadow-md text-indigo-700 text-center mt-8 mb-4  font-semibold">Private pages</h3>
+
+    <li><p>
+      <%= live_redirect("Rocket-Launch", to: Routes.live_path(@socket, PragWeb.RocketLaunchLive )) %>
+    </p></li>
+    <li><p>
+      <%= live_redirect("Top-Secret", to: Routes.live_path(@socket, PragWeb.TopSecretLive )) %>
+    </p></li>
+
+    <h3 class="text-xxl shadow-md text-indigo-700 text-center mt-8 mb-4  font-semibold">Public pages</h3>
+
     <li><p>
       <%= live_redirect("Autocomplete", to: Routes.live_path(@socket, PragWeb.AutocompleteLive )) %>
     </p></li>
@@ -50,12 +62,6 @@
     </p></li>
     <li><p>
       <%= live_redirect("Sandbox", to: Routes.live_path(@socket, PragWeb.SandboxLive )) %>
-    </p></li>
-    <li><p>
-      <%= live_redirect("Rocket-Launch", to: Routes.live_path(@socket, PragWeb.RocketLaunchLive )) %>
-    </p></li>
-    <li><p>
-      <%= live_redirect("Top-Secret", to: Routes.live_path(@socket, PragWeb.TopSecretLive )) %>
     </p></li>
 
   </ul>
