@@ -41,7 +41,6 @@ defmodule PragWeb.Router do
     live "/infinite-scroll", InfiniteScrollLive
     live "/datepicker", DatePickerLive
     live "/sandbox", SandboxLive
-    live "/rocket-launch", RocketLaunchLive
   end
 
   # Other scopes may use custom stacks.
@@ -97,6 +96,8 @@ defmodule PragWeb.Router do
     pipe_through [:browser, :require_authenticated_user]
 
     live "/topsecret", TopSecretLive
+    live "/rocket-launch", RocketLaunchLive
+
     get "/users/settings", UserSettingsController, :edit
     put "/users/settings", UserSettingsController, :update
     get "/users/settings/confirm_email/:token", UserSettingsController, :confirm_email
