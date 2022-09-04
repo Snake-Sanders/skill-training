@@ -5,7 +5,6 @@ defmodule PragWeb.TopSecretLive do
   import PragWeb.LiveHelpers
 
   def mount(_params, session, socket) do
-    IO.puts("++ mount topsecret")
     {:ok, assign_current_user(socket, session)}
   end
 
