@@ -41,6 +41,7 @@ defmodule PragWeb.Router do
     live "/infinite-scroll", InfiniteScrollLive
     live "/datepicker", DatePickerLive
     live "/sandbox", SandboxLive
+    live "/chart", ChartLive
   end
 
   # Other scopes may use custom stacks.
@@ -82,9 +83,9 @@ defmodule PragWeb.Router do
   scope "/", PragWeb do
     pipe_through [:browser, :redirect_if_user_is_authenticated]
 
-    live "/users/register", RegisterLive
+    # this route also captures the call to Routes.user_registration_path(conn, :new)
+    live "/users/register", RegisterLive, :new, as: :user_registration
 
-    get "/users/register", UserRegistrationController, :new
     post "/users/register", UserRegistrationController, :create
     get "/users/log_in", UserSessionController, :new
     post "/users/log_in", UserSessionController, :create

@@ -4,8 +4,17 @@ import flatpickr from "../vendor/flatpickr"
 // phone number formatter
 import parsePhoneNumber from "../vendor/libphonenumber-min"
 
+import LineChart from "./line-chart"
+
 // container struct that has all the special hook functions
 let Hooks = {};
+
+Hooks.LineChart = {
+    mounted() {
+        const {label, values} =JSON.parse(this.el.dataset.chartData);
+        this.chart = new LineChart(this.el, label, values) 
+    }
+}
 
 Hooks.DatePicker = {
     mounted() {
