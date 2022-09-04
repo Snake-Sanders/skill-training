@@ -11,7 +11,8 @@ class LineChart {
           {
             label: "Customer 1",
             data: values,
-            borderColor: "#4c51bf"
+            borderColor: "#4c51bf",
+            borderWidth: 2
           },
         ],
       },
@@ -30,7 +31,7 @@ class LineChart {
             type: 'linear',
             title: {
               display: true,
-              text: 'Sugar values'
+              text: 'Sugar levels'
             },
             suggestedMin: 0,
             suggestedMax: 200
