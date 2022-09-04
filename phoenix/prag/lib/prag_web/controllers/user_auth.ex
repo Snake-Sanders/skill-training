@@ -89,11 +89,11 @@ defmodule PragWeb.UserAuth do
   and remember me token.
   """
   def fetch_current_user(conn, _opts) do
-    IO.puts("++ plug: fetch_current_user")
+    # IO.puts("++ plug: fetch_current_user")
     {user_token, conn} = ensure_user_token(conn)
-    IO.inspect(user_token, label: "++ fetch_current_user-user_token")
+    # IO.inspect(user_token, label: "++ fetch_current_user-user_token")
     user = user_token && Accounts.get_user_by_session_token(user_token)
-    IO.inspect(user, label: "++ fetch_current_user-user")
+    # IO.inspect(user, label: "++ fetch_current_user-user")
     assign(conn, :current_user, user)
   end
 
@@ -131,7 +131,7 @@ defmodule PragWeb.UserAuth do
   they use the application at all, here would be a good place.
   """
   def require_authenticated_user(conn, _opts) do
-    IO.puts("++ plug: require_authenticated_user")
+    # IO.puts("++ plug: require_authenticated_user")
     if conn.assigns[:current_user] do
       conn
     else
