@@ -11,8 +11,9 @@ let Hooks = {};
 
 Hooks.LineChart = {
     mounted() {
-        const {label, values} =JSON.parse(this.el.dataset.chartData);
-        this.chart = new LineChart(this.el, label, values) 
+        console.log("LineChart mounted");
+        const {labels, values} =JSON.parse(this.el.dataset.chartData);
+        this.chart = new LineChart(this.el, labels, values) 
     }
 }
 
