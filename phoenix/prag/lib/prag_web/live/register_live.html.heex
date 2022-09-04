@@ -2,11 +2,11 @@
   <h1>Live Register</h1>
 
   <.form let={f} for={@changeset}
-    action={Routes.user_registration_path(@socket, :create)}
-    phx-submit="save"
-    phx-change="validate"
-    phx-debounce= "blur"
-    phx-trigger-action:{@trigger_submit}>
+          action={Routes.user_registration_path(@socket, :create)}
+          phx-submit="save"
+          phx-change="validate"
+          phx-debounce="blur"
+          phx-trigger-action={@trigger_submit}>
 
     <%= label f, :email %>
     <%= email_input f, :email, required: true %>
