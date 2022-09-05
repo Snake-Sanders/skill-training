@@ -4,8 +4,8 @@ defmodule PragWeb.ChartLive do
   def mount(_params, _session, socket) do
     if connected?(socket) do
       :timer.send_interval(2000, self(), :update)
-
     end
+
     labels = 1..12 |> Enum.to_list()
     values = Enum.map(labels, fn _ -> get_reading() end)
 
@@ -20,14 +20,19 @@ defmodule PragWeb.ChartLive do
     ~H"""
     <div id="charting">
     <h1>Blood Sugar</h1>
-    <canvas id="chart-canvas"
-            phx-hook="LineChart"
-            data-chart-data={Jason.encode!(@chart_data)}>
-    </canvas>
+    <div id="chart-canvas" phx-update="ignore">
+      <canvas id="chart-canvas"
+      phx-hook="LineChart"
+      data-chart-data={Jason.encode!(@chart_data)}>
+      </canvas>
+    </div>
     <div class="text-center">
-    <button phx-click="get-reading">
-      Get Reading
-    </button>
+      <button phx-click="get-reading">
+        Get Reading
+      </button>
+      <div class="my-4">
+      Total readings: <%= @current_reading %>
+      </div>
     </div>
 
     </div>
@@ -39,7 +44,6 @@ defmodule PragWeb.ChartLive do
   end
 
   def handle_event("get-reading", _, socket) do
-
     {:noreply, add_point(socket)}
   end
 
