@@ -2,6 +2,10 @@ defmodule PragWeb.ChartLive do
   use PragWeb, :live_view
 
   def mount(_params, _session, socket) do
+    if connected?(socket) do
+      :timer.send_interval(2000, self(), :update)
+
+    end
     labels = 1..12 |> Enum.to_list()
     values = Enum.map(labels, fn _ -> get_reading() end)
 
@@ -30,7 +34,20 @@ defmodule PragWeb.ChartLive do
     """
   end
 
+  def handle_info(:update, socket) do
+    {:noreply, add_point(socket)}
+  end
+
   def handle_event("get-reading", _, socket) do
+
+    {:noreply, add_point(socket)}
+  end
+
+  defp get_reading() do
+    Enum.random(70..180)
+  end
+
+  defp add_point(socket) do
     socket = update(socket, :current_reading, &(&1 + 1))
 
     point = %{
@@ -39,12 +56,6 @@ defmodule PragWeb.ChartLive do
     }
 
     # sends to the client the new point
-    socket = push_event(socket, "new-point", point)
-
-    {:noreply, socket}
-  end
-
-  defp get_reading() do
-    Enum.random(70..180)
+    push_event(socket, "new-point", point)
   end
 end
