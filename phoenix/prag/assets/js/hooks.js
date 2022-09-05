@@ -14,6 +14,11 @@ Hooks.LineChart = {
         console.log("LineChart mounted");
         const {labels, values} =JSON.parse(this.el.dataset.chartData);
         this.chart = new LineChart(this.el, labels, values) 
+
+        // connects and handle the event `new-point` triggered by chart_live.ex
+        this.handleEvent("new-point", ({label, value}) => {
+            this.chart.addPoint(label, value)
+        })
     }
 }
 
