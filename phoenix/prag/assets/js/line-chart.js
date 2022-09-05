@@ -53,7 +53,7 @@ class LineChart {
       labels.shift();
     }
 
-    this.chart.update();
+    this.chart.update("none");
   }
 }
 
