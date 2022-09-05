@@ -21,6 +21,9 @@ alias Prag.Servers.Server
 alias Prag.Donations.Donation
 alias Prag.Vehicles.Vehicle
 alias Prag.PizzaOrders.PizzaOrder
+alias Prag.Incidents.Incident
+alias Prag.Geo
+
 %Boat{
   model: "1760 Retriever Jon Deluxe",
   price: "$",
@@ -544,12 +547,35 @@ for _i <- 1..1000 do
     |> Enum.shuffle()
     |> Enum.take(2)
 
-    pizza = "#{Faker.Pizza.size} #{Faker.Pizza.style()} with
+  pizza = "#{Faker.Pizza.size()} #{Faker.Pizza.style()} with
             #{topping_1} and #{topping_2}"
 
-    %PizzaOrder{
-      username: Faker.Internet.user_name(),
-      pizza: pizza
-    }
-    |> Repo.insert!()
+  %PizzaOrder{
+    username: Faker.Internet.user_name(),
+    pizza: pizza
+  }
+  |> Repo.insert!()
+end
+
+incident_descriptions = [
+  "🦊 Fox in the henhouse",
+  "🏢 Stuck in an elevator",
+  "🚦 Traffic lights out",
+  "🏎 Reckless driving",
+  "🐻 Bear in the trash",
+  "🤡 Disturbing the peace",
+  "🔥 BBQ fire",
+  "🙀 Cat stuck in a tree",
+  "🐶 Dog on the loose"
+]
+
+for description <- incident_descriptions do
+  {lat, lng} = Geo.randomDenverLatLng()
+
+  %Incident{
+    description: description,
+    lat: lat,
+    lng: lng
+  }
+  |> Repo.insert!()
 end
