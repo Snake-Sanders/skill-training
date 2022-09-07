@@ -42,6 +42,7 @@ defmodule PragWeb.Router do
     live "/datepicker", DatePickerLive
     live "/sandbox", SandboxLive
     live "/chart", ChartLive
+    live "/map", MapLive
   end
 
   # Other scopes may use custom stacks.
