@@ -33,7 +33,14 @@ Hooks.IncidentMap = {
         this.handleEvent("add-marker", incident => {
             this.map.addMarker(incident);
             this.map.highlightMarker(incident);
+            this.scrollTo(incident.id)
         })
+    },
+
+    scrollTo(incidentId){
+        const incidetElement = 
+            document.querySelector(`[phx-value-id="${incidentId}"]`);
+        incidetElement.scrollIntoView(false);
     }
 }
 
