@@ -39,14 +39,14 @@ class IncidentMap {
   }
 
   highlightMarker(incident) {
-    const marker = this.markerForIncident(incident);
+    const marker = this.getMarkerForIncident(incident);
 
     marker.openPopup();
 
     this.map.panTo(marker.getLatLng());
   }
 
-  markerForIncident(incident) {
+  getMarkerForIncident(incident) {
     let markerLayer;
     this.map.eachLayer(layer => {
       if (layer instanceof L.Marker) {
