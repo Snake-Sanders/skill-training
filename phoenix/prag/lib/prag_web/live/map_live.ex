@@ -4,6 +4,8 @@ defmodule PragWeb.MapLive do
   alias Prag.Incidents
 
   def mount(_params, _session, socket) do
+    if connected?(socket), do: Incidents.subscribe()
+
     socket =
       assign(socket,
         incidents: Incidents.list_incidents(),

@@ -29,6 +29,11 @@ Hooks.IncidentMap = {
         this.handleEvent("highlight-marker", incident => {
             this.map.highlightMarker(incident)
         })
+
+        this.handleEvent("add-marker", incident => {
+            this.map.addMarker(incident);
+            this.map.highlightMarker(incident);
+        })
     }
 }
 
