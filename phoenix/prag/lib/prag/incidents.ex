@@ -96,6 +96,7 @@ defmodule Prag.Incidents do
     incident
     |> Incident.changeset(attrs)
     |> Repo.update()
+    |> broadcast(:incident_updated)
   end
 
   @doc """
