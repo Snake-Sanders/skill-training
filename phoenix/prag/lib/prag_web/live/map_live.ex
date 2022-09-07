@@ -19,8 +19,8 @@ defmodule PragWeb.MapLive do
     <div id="mapping">
       <div class="sidebar">
         <%= for incident <- @incidents do %>
-          <div class="incident"
-               selected={@selected_incident == incident}
+          <div class={"incident #{if @selected_incident == incident do "selected" end}"}
+
                phx-click="select-incident"
                phx-value-id={incident.id}>
             <%= incident.description %>
