@@ -17,7 +17,9 @@ Hooks.IncidentMap = {
         this.map = new IncidentMap(
             this.el, [39.74, -104.99], event => {
                 const incidentId = event.target.options.incidentId;
-                this.pushEvent("marker-clicked", incidentId)
+                this.pushEvent("marker-clicked", incidentId, (reply, ref) => {
+                    this.scrollTo(reply.incident.id);
+                });
             }
         )
         const incidents = JSON.parse(this.el.dataset.incidents);
