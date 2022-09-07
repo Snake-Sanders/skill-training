@@ -18,7 +18,7 @@ defmodule Prag.Incidents do
 
   """
   def list_incidents do
-    Repo.all(Incident)
+    Repo.all(from i in Incident, order_by: [desc: i.id])
   end
 
   @doc """
@@ -53,6 +53,31 @@ defmodule Prag.Incidents do
     %Incident{}
     |> Incident.changeset(attrs)
     |> Repo.insert()
+    |> broadcast(:incident_created)
+  end
+
+  def create_random_incident() do
+    descriptions = [
+      "🦊 Fox in the henhouse",
+      "🏢 Stuck in an elevator",
+      "🚦 Traffic lights out",
+      "🏎 Reckless driving",
+      "🐻 Bear in the trash",
+      "🤡 Disturbing the peace",
+      "🔥 BBQ fire",
+      "🙀 #{Faker.Cat.name()} stuck in a tree",
+      "🐶 #{Faker.Dog.PtBr.name()} on the loose"
+    ]
+
+    {lat, lng} = Prag.Geo.randomDenverLatLng()
+    {:ok, _incident}=
+      create_incident(%{
+        lat: lat,
+        lng: lng,
+        descriptions: Enum.random(descriptions)
+      }
+
+      )
   end
 
   @doc """
@@ -101,4 +126,20 @@ defmodule Prag.Incidents do
   def change_incident(%Incident{} = incident, attrs \\ %{}) do
     Incident.changeset(incident, attrs)
   end
+
+  def subscribe() do
+    Phoenix.PubSub.subscribe(Prag.PubSub, "incidents")
+  end
+
+  defp broadcast({:ok, incident}, event) do
+    Phoenix.PubSub.broadcast(
+      Prag.PubSub,
+      "incidents",
+      {event, incident}
+    )
+
+    {:ok, incident}
+  end
+
+  defp broadcast({:error, _changeset} = error, _event), do: error
 end
