@@ -15,9 +15,14 @@ Hooks.IncidentMap = {
     mounted() {
         console.log("IncidentMap mounted");
         this.map = new IncidentMap(
-            this.el, [78.2190991,15.6420511]
-            // this.el, [39.74, -104.99]
+            // this.el, [78.2190991,15.6420511]
+            this.el, [39.74, -104.99]
         )
+        const incidents = JSON.parse(this.el.dataset.incidents);
+
+        incidents.forEach(incident => {
+            this.map.addMarker(incident);
+        })
     }
 }
 

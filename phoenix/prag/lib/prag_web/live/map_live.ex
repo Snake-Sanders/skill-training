@@ -30,7 +30,8 @@ defmodule PragWeb.MapLive do
       <div class="main">
         <div id="wrapper" phx-update="ignore">
           <div id="map"
-              phx-hook="IncidentMap">
+              phx-hook="IncidentMap"
+              data-incidents={Jason.encode!(@incidents)}>
           </div>
         </div>
         <div class="text-center">

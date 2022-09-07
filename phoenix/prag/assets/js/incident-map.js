@@ -4,19 +4,12 @@ class IncidentMap {
   constructor(element, center, markerClickedCallback) {
     this.map = L.map(element).setView(center, 13);
 
-    // const accessToken = "your-access-token-goes-here";
-
     L.tileLayer(
       'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
       {
         maxZoom: 18,
-        attribution: 
-        '©<a href="https://www.openstreetmap.org/copyright/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
-        // id: "mapbox/streets-v11",
-        // zoomOffset: -1,
-        // referrerPolicy: false
-        // accessToken: accessToken,
-        // tileSize: 512,
+        attribution:
+          '©<a href="https://www.openstreetmap.org/copyright/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
       }
     ).addTo(this.map);
 
