@@ -6,8 +6,20 @@ import parsePhoneNumber from "../vendor/libphonenumber-min"
 
 import LineChart from "./line-chart"
 
+import IncidentMap from "./incident-map"
+
 // container struct that has all the special hook functions
 let Hooks = {};
+
+Hooks.IncidentMap = {
+    mounted() {
+        console.log("IncidentMap mounted");
+        this.map = new IncidentMap(
+            this.el, [78.2190991,15.6420511]
+            // this.el, [39.74, -104.99]
+        )
+    }
+}
 
 Hooks.LineChart = {
     mounted() {
