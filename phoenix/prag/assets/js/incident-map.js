@@ -17,8 +17,16 @@ class IncidentMap {
   }
 
   addMarker(incident) {
+    const marker_options = {
+      incidentId: incident.id,
+      icon: L.icon({
+        iconUrl: 'images/map/marker-icon.png',
+        shadowUrl: 'images/map/marker-shadow.png'
+      })
+    }
+    
     const marker =
-      L.marker([incident.lat, incident.lng], { incidentId: incident.id })
+      L.marker([incident.lat, incident.lng], marker_options)
         .addTo(this.map)
         .bindPopup(incident.description)
 
