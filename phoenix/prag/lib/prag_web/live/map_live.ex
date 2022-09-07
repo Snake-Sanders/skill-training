@@ -22,7 +22,6 @@ defmodule PragWeb.MapLive do
       <div class="sidebar">
         <%= for incident <- @incidents do %>
           <div class={"incident #{if @selected_incident == incident do "selected" end}"}
-
                phx-click="select-incident"
                phx-value-id={incident.id}>
             <%= incident.description %>
@@ -32,8 +31,7 @@ defmodule PragWeb.MapLive do
       <div class="main">
         <div id="wrapper" phx-update="ignore">
           <div id="map"
-              phx-hook="IncidentMap"
-              data-incidents={Jason.encode!(@incidents)}>
+              phx-hook="IncidentMap">
           </div>
         </div>
         <div class="text-center">

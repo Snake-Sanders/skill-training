@@ -22,10 +22,17 @@ Hooks.IncidentMap = {
                 });
             }
         )
-        const incidents = JSON.parse(this.el.dataset.incidents);
+        // the incidents are no longer passed by dataset.
+        // const incidents = JSON.parse(this.el.dataset.incidents);
+        // incidents.forEach(incident => {
+        //     this.map.addMarker(incident);
+        // })
 
-        incidents.forEach(incident => {
-            this.map.addMarker(incident);
+        // now the client request the incidents to the server
+        this.pushEvent("get-incidents", {}, (reply, ref) => {
+            reply.incidents.forEach(incident => {
+                this.map.addMarker(incident)
+            })
         })
 
         this.handleEvent("highlight-marker", incident => {
