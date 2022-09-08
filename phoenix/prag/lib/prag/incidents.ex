@@ -70,14 +70,14 @@ defmodule Prag.Incidents do
     ]
 
     {lat, lng} = Prag.Geo.randomDenverLatLng()
-    {:ok, _incident}=
+    desc = Enum.random(descriptions)
+
+    {:ok, _incident} =
       create_incident(%{
         lat: lat,
         lng: lng,
-        descriptions: Enum.random(descriptions)
-      }
-
-      )
+        description: desc
+      })
   end
 
   @doc """

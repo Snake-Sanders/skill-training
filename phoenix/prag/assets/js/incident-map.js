@@ -4,19 +4,12 @@ class IncidentMap {
   constructor(element, center, markerClickedCallback) {
     this.map = L.map(element).setView(center, 13);
 
-    // const accessToken = "your-access-token-goes-here";
-
     L.tileLayer(
       'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
       {
         maxZoom: 18,
-        attribution: 
-        '©<a href="https://www.openstreetmap.org/copyright/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
-        // id: "mapbox/streets-v11",
-        // zoomOffset: -1,
-        // referrerPolicy: false
-        // accessToken: accessToken,
-        // tileSize: 512,
+        attribution:
+          '©<a href="https://www.openstreetmap.org/copyright/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
       }
     ).addTo(this.map);
 
@@ -24,8 +17,16 @@ class IncidentMap {
   }
 
   addMarker(incident) {
+    const marker_options = {
+      incidentId: incident.id,
+      icon: L.icon({
+        iconUrl: 'images/map/marker-icon.png',
+        shadowUrl: 'images/map/marker-shadow.png'
+      })
+    }
+    
     const marker =
-      L.marker([incident.lat, incident.lng], { incidentId: incident.id })
+      L.marker([incident.lat, incident.lng], marker_options)
         .addTo(this.map)
         .bindPopup(incident.description)
 
@@ -38,14 +39,14 @@ class IncidentMap {
   }
 
   highlightMarker(incident) {
-    const marker = this.markerForIncident(incident);
+    const marker = this.getMarkerForIncident(incident);
 
     marker.openPopup();
 
     this.map.panTo(marker.getLatLng());
   }
 
-  markerForIncident(incident) {
+  getMarkerForIncident(incident) {
     let markerLayer;
     this.map.eachLayer(layer => {
       if (layer instanceof L.Marker) {

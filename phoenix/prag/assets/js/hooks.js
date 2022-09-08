@@ -15,9 +15,41 @@ Hooks.IncidentMap = {
     mounted() {
         console.log("IncidentMap mounted");
         this.map = new IncidentMap(
-            this.el, [78.2190991,15.6420511]
-            // this.el, [39.74, -104.99]
+            this.el, [39.74, -104.99], event => {
+                const incidentId = event.target.options.incidentId;
+                this.pushEvent("marker-clicked", incidentId, (reply, ref) => {
+                    this.scrollTo(reply.incident.id);
+                });
+            }
         )
+        // the incidents are no longer passed by dataset.
+        // const incidents = JSON.parse(this.el.dataset.incidents);
+        // incidents.forEach(incident => {
+        //     this.map.addMarker(incident);
+        // })
+
+        // now the client request the incidents to the server
+        this.pushEvent("get-incidents", {}, (reply, ref) => {
+            reply.incidents.forEach(incident => {
+                this.map.addMarker(incident)
+            })
+        })
+
+        this.handleEvent("highlight-marker", incident => {
+            this.map.highlightMarker(incident)
+        })
+
+        this.handleEvent("add-marker", incident => {
+            this.map.addMarker(incident);
+            this.map.highlightMarker(incident);
+            this.scrollTo(incident.id)
+        })
+    },
+
+    scrollTo(incidentId){
+        const incidetElement = 
+            document.querySelector(`[phx-value-id="${incidentId}"]`);
+        incidetElement.scrollIntoView(false);
     }
 }
 
