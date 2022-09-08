@@ -3,7 +3,7 @@
   <span>Total items: <%= length(@donations) %></span>
 </div>
 
-<div id="donations" phx-window-keyup="update">
+<div id="donations" phx-window-keyup="paginate" phx-throttle="500">
   <form id="select-per-page" phx-change="select-per-page">
     Show
     <select name="per-page">

@@ -15,26 +15,15 @@ defmodule PragWeb.PaginateLive do
     {:noreply, socket}
   end
 
-  def handle_event("update", %{"key" => "ArrowLeft"}, socket) do
-    cur_page = socket.assigns.options.page
-    page = if cur_page > 1, do: cur_page - 1, else: cur_page
-    per_page = socket.assigns.options.per_page
-
-    socket = get_items_in_page(socket, page, per_page)
-
-    {:noreply, socket}
+  def handle_event("paginate", %{"key" => "ArrowLeft"}, socket) do
+    {:noreply, goto_page(socket, socket.assigns.options.page - 1)}
   end
 
-  def handle_event("update", %{"key" => "ArrowRight"}, socket) do
-    page = socket.assigns.options.page + 1
-    per_page = socket.assigns.options.per_page
-
-    socket = get_items_in_page(socket, page, per_page)
-
-    {:noreply, socket}
+  def handle_event("paginate", %{"key" => "ArrowRight"}, socket) do
+    {:noreply, goto_page(socket, socket.assigns.options.page + 1)}
   end
 
-  def handle_event("update", _params, socket) do
+  def handle_event("paginate", _params, socket) do
     {:noreply, socket}
   end
 
@@ -68,6 +57,19 @@ defmodule PragWeb.PaginateLive do
 
     {:noreply, socket}
   end
+
+  defp goto_page(socket, page) when page > 0 do
+    push_patch(socket,
+      to:
+      Routes.live_path(
+        socket,
+        __MODULE__,
+        page: page,
+        per_page: socket.assigns.options.per_page
+      ))
+  end
+
+  defp goto_page(socket, _page), do: socket
 
   defp get_items_in_page(socket, page, per_page) do
     paginate_options = %{page: page, per_page: per_page}
