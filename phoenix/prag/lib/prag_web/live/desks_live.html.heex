@@ -30,9 +30,9 @@
     </div>
 
 
-    <%= for {_ref, err} <- @uploads.photo.errors do %>
+    <%= for err <- upload_errors(@uploads.photo) do %>
       <div class="error">
-        <%= humanize(err) %>
+        <%= error_to_string(err) %>
       </div>
     <% end %>
 
@@ -52,7 +52,7 @@
           &times;</a>
           <%= for err <- upload_errors(@uploads.photo, entry) do %>
             <div class="error">
-              <%= humanize(err) %>
+              <%= error_to_string(err) %>
             </div>
           <% end %>
 
