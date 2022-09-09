@@ -30,20 +30,20 @@ defmodule PragWeb.DesksLive do
 
   def handle_event("save", %{"desk" => params}, socket) do
     # now the images are already uploaded
-    # 1. copy temp files
-    urls =
-      consume_uploaded_entries(socket, :photo, fn meta, entry ->
-        # processes each upload file, the files are cleared on func exit
-        dest = Path.join("priv/static/uploads", filename(entry))
-        File.cp!(meta.path, dest)
-        Routes.static_path(socket, "/uploads/#{filename(entry)}")
-      end)
+    {completed, []} = uploaded_entries(socket, :photo)
 
-    # desk = %Desk{photo_url: urls}
+    urls =
+      for entry <- completed do
+        Routes.static_path(socket, "/uploads/#{filename(entry)}")
+      end
+
     params = Map.merge(params, %{"photo_url" => urls})
 
-    case Desks.create_desk(params) do
+    # the broadcase has to be done after the url is set,
+    # that is why we pass `consume_photos` callback fun.
+    case Desks.create_desk(params, &consume_photos(socket, &1)) do
       {:ok, _desk} ->
+        # create a new changeset for the next upload
         changeset = Desks.change_desk(%Desk{})
         {:noreply, assign(socket, changeset: changeset)}
 
@@ -72,5 +72,15 @@ defmodule PragWeb.DesksLive do
   defp filename(entry) do
     [ext | _] = MIME.extensions(entry.client_type)
     "#{entry.uuid}.#{ext}"
+  end
+
+  def consume_photos(socket, desk) do
+    consume_uploaded_entries(socket, :photo, fn meta, entry ->
+      # processes an upload file, the temp file is cleared on func exit
+      dest = Path.join("priv/static/uploads", filename(entry))
+      File.cp!(meta.path, dest)
+    end)
+
+    {:ok, desk}
   end
 end
