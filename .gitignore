@@ -11,3 +11,4 @@ erl_crash.dump
 /elixir
 .DS_Store
 .vscode
+phoenix/prag/priv/static/uploads/
