@@ -15,7 +15,11 @@
       (max <%= trunc(@uploads.photo.max_file_size / 1_000_000) %> MB each)
     </div>
 
-    <%= live_file_input(@uploads.photo) %>
+    <div class="drop" phx-drop-target={@uploads.photo.ref}>
+      <%= live_file_input(@uploads.photo) %>
+      or drag and drop here
+    </div>
+
 
     <%= for {_ref, err} <- @uploads.photo.errors do %>
       <div class="error">
