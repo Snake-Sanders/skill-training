@@ -10,14 +10,23 @@
     <%= text_input f, :name, placeholder: "Name" %>
     <%= error_tag f, :name %>
 
-    <div class="hint">
-      Add up to <%= @uploads.photo.max_entries %> photos
-      (max <%= trunc(@uploads.photo.max_file_size / 1_000_000) %> MB each)
-    </div>
+
 
     <div class="drop" phx-drop-target={@uploads.photo.ref}>
-      <%= live_file_input(@uploads.photo) %>
-      or drag and drop here
+      <div>
+        <img src="/images/upload.svg">
+        <div>
+          <label for={@uploads.photo.ref}>
+            <span>Upload a file</span>
+            <%= live_file_input(@uploads.photo, class: "sr-only") %>
+          </label>
+          <span>or drag and drop here</span>
+        </div>
+        <div class="hint">
+          Add up to <%= @uploads.photo.max_entries %> photos max,
+          up to <%= trunc(@uploads.photo.max_file_size / 1_000_000) %> MB each
+        </div>
+      </div>
     </div>
 
 
