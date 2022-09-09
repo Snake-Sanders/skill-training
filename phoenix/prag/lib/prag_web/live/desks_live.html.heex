@@ -10,16 +10,29 @@
     <%= text_input f, :name, placeholder: "Name" %>
     <%= error_tag f, :name %>
 
-    <div class="hint">
-      Add up to <%= @uploads.photo.max_entries %> photos
-      (max <%= trunc(@uploads.photo.max_file_size / 1_000_000) %> MB each)
+
+
+    <div class="drop" phx-drop-target={@uploads.photo.ref}>
+      <div>
+        <img src="/images/upload.svg">
+        <div>
+          <label for={@uploads.photo.ref}>
+            <span>Upload a file</span>
+            <%= live_file_input(@uploads.photo, class: "sr-only") %>
+          </label>
+          <span>or drag and drop here</span>
+        </div>
+        <div class="hint">
+          Add up to <%= @uploads.photo.max_entries %> photos max,
+          up to <%= trunc(@uploads.photo.max_file_size / 1_000_000) %> MB each
+        </div>
+      </div>
     </div>
 
-    <%= live_file_input(@uploads.photo) %>
 
-    <%= for {_ref, err} <- @uploads.photo.errors do %>
+    <%= for err <- upload_errors(@uploads.photo) do %>
       <div class="error">
-        <%= humanize(err) %>
+        <%= error_to_string(err) %>
       </div>
     <% end %>
 
@@ -39,7 +52,7 @@
           &times;</a>
           <%= for err <- upload_errors(@uploads.photo, entry) do %>
             <div class="error">
-              <%= humanize(err) %>
+              <%= error_to_string(err) %>
             </div>
           <% end %>
 
@@ -52,7 +65,7 @@
 
   <div id="photos" phx-update="prepend">
     <%= for desk <- @desks do %>
-      <%= for {photo_url, index} <- Enum.with_index(desk.photo_urls) do %>
+      <%= for {photo_url, index} <- Enum.with_index(desk.photo_url) do %>
         <div class="photo" id={"#{desk.id}-#{index}"}>
           <img src={photo_url}>
           <div class="name">
