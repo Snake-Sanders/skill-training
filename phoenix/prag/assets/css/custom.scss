@@ -762,7 +762,7 @@ li:hover {
         }
 
         .row {
-          @apply flex flex-wrap items-baseline justify-between text-base  font-medium text-gray-500;
+          @apply flex flex-wrap items-baseline justify-between text-base font-medium text-gray-500;
         }
 
         .deploys {
@@ -773,7 +773,8 @@ li:hover {
           }
         }
 
-        .repo, .commit {
+        .repo,
+        .commit {
           @apply text-sm text-gray-900;
         }
 
@@ -847,7 +848,8 @@ li:hover {
   }
 
   form {
-    @apply flex items-center justify-end mb-4;;
+    @apply flex items-center justify-end mb-4;
+    ;
 
     select {
       @apply appearance-none bg-gray-200 border border-gray-400 text-gray-700 py-1 px-2 rounded-lg leading-tight font-semibold cursor-pointer text-sm mx-1;
@@ -1025,65 +1027,75 @@ li:hover {
  * https://projects.lukehaas.me/css-loaders/
  */
 
- .loader,
- .loader:before,
- .loader:after {
-   border-radius: 50%;
-   width: 2.5em;
-   height: 2.5em;
-   -webkit-animation-fill-mode: both;
-   animation-fill-mode: both;
-   -webkit-animation: load7 1.8s infinite ease-in-out;
-   animation: load7 1.8s infinite ease-in-out;
- }
- .loader {
-   color: #5a67d8;
-   font-size: 10px;
-   margin: 20px auto;
-   position: relative;
-   text-indent: -9999em;
-   -webkit-transform: translateZ(0);
-   -ms-transform: translateZ(0);
-   transform: translateZ(0);
-   -webkit-animation-delay: -0.16s;
-   animation-delay: -0.16s;
- }
- .loader:before,
- .loader:after {
-   content: "";
-   position: absolute;
-   top: 0;
- }
- .loader:before {
-   left: -3.5em;
-   -webkit-animation-delay: -0.32s;
-   animation-delay: -0.32s;
- }
- .loader:after {
-   left: 3.5em;
- }
- @-webkit-keyframes load7 {
-   0%,
-   80%,
-   100% {
-     box-shadow: 0 2.5em 0 -1.3em;
-   }
-   40% {
-     box-shadow: 0 2.5em 0 0;
-   }
- }
- @keyframes load7 {
-   0%,
-   80%,
-   100% {
-     box-shadow: 0 2.5em 0 -1.3em;
-   }
-   40% {
-     box-shadow: 0 2.5em 0 0;
-   }
- }
+.loader,
+.loader:before,
+.loader:after {
+  border-radius: 50%;
+  width: 2.5em;
+  height: 2.5em;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+  -webkit-animation: load7 1.8s infinite ease-in-out;
+  animation: load7 1.8s infinite ease-in-out;
+}
 
- .auth {
+.loader {
+  color: #5a67d8;
+  font-size: 10px;
+  margin: 20px auto;
+  position: relative;
+  text-indent: -9999em;
+  -webkit-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-animation-delay: -0.16s;
+  animation-delay: -0.16s;
+}
+
+.loader:before,
+.loader:after {
+  content: "";
+  position: absolute;
+  top: 0;
+}
+
+.loader:before {
+  left: -3.5em;
+  -webkit-animation-delay: -0.32s;
+  animation-delay: -0.32s;
+}
+
+.loader:after {
+  left: 3.5em;
+}
+
+@-webkit-keyframes load7 {
+
+  0%,
+  80%,
+  100% {
+    box-shadow: 0 2.5em 0 -1.3em;
+  }
+
+  40% {
+    box-shadow: 0 2.5em 0 0;
+  }
+}
+
+@keyframes load7 {
+
+  0%,
+  80%,
+  100% {
+    box-shadow: 0 2.5em 0 -1.3em;
+  }
+
+  40% {
+    box-shadow: 0 2.5em 0 0;
+  }
+}
+
+.auth {
   @apply px-6 mt-8 mx-auto w-full max-w-md;
 
   h3 {
@@ -1284,7 +1296,7 @@ li:hover {
   }
 
   input[type="number"] {
-    @apply w-1/4 rounded border border-gray-300 px-3 py-2 text-gray-700 focus:outline-none;
+    @apply w-1/4 rounded border border-gray-300 px-3 py-2 text-gray-700 focus: outline-none;
   }
 
   .status {
@@ -1306,8 +1318,7 @@ li:hover {
       @apply outline-none ring ring-indigo-300 border-indigo-300;
     }
 
-    input[type="file"] {
-    }
+    input[type="file"] {}
 
     button {
       @apply mt-4 w-full py-2 px-4 border border-transparent font-medium rounded-md text-white bg-indigo-600 transition duration-150 ease-in-out;
@@ -1333,7 +1344,7 @@ li:hover {
       @apply flex items-baseline justify-center space-x-1 my-2 p-4 border-2 border-dashed border-gray-300 rounded-md text-center text-gray-600;
 
       label {
-        @apply cursor-pointer font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500;
+        @apply cursor-pointer font-medium text-indigo-600 hover: text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500;
       }
 
       p {
@@ -1364,13 +1375,13 @@ li:hover {
         @apply flex h-2 overflow-hidden text-base bg-pink-200 rounded-lg mb-4;
       }
 
-      .progress .bar > span {
+      .progress .bar>span {
         @apply shadow-md bg-pink-500;
         transition: width 1s ease;
       }
 
       a {
-        @apply text-3xl font-bold text-gray-700 hover:text-red-700;
+        @apply text-3xl font-bold text-gray-700 hover: text-red-700;
       }
     }
 
@@ -1382,18 +1393,46 @@ li:hover {
   }
 
   #photos {
-    @apply flex flex-wrap items-center justify-center sm:justify-start;
+    @apply flex flex-wrap items-center justify-center sm: justify-start;
 
     .photo {
       @apply text-center p-4 m-4 border-2 border-gray-300 rounded-xl;
 
       img {
-        @apply h-64 sm:h-36 mx-auto object-fill;
+        @apply h-64 sm: h-36 mx-auto object-fill;
       }
 
       .name {
         @apply mt-2 text-base text-gray-600 font-medium;
       }
     }
+  }
+}
+
+
+#underwater {
+  @apply max-w-xl mx-auto text-center;
+
+  a.button,
+  button {
+    @apply inline-block text-base bg-indigo-500 text-white font-medium py-2 px-4 rounded outline-none;
+  }
+
+  a.button:hover,
+  button:hover {
+    @apply bg-indigo-700;
+  }
+
+  a.button:focus,
+  button:focus {
+    @apply outline-none border-indigo-700 ring ring-indigo-300;
+  }
+
+  h2 {
+    @apply text-2xl font-bold;
+  }
+
+  .creatures {
+    @apply text-center my-6 text-4xl;
   }
 }

@@ -45,6 +45,7 @@ defmodule PragWeb.Router do
     live "/map", MapLive
     live "/key-events", KeyEventsLive
     live "/desks", DesksLive
+    live "/underwater", UnderwaterLive
   end
 
   # Other scopes may use custom stacks.
