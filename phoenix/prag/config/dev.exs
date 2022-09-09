@@ -61,7 +61,7 @@ config :prag, PragWeb.Endpoint,
 config :prag, PragWeb.Endpoint,
   live_reload: [
     patterns: [
-      ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
+      ~r"priv/static/(?!uploads).*(js|css|png|jpeg|jpg|gif|svg)$",
       ~r"priv/gettext/.*(po)$",
       ~r"lib/prag_web/(live|views)/.*(ex)$",
       ~r"lib/prag_web/templates/.*(eex)$"
