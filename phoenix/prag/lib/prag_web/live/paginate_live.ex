@@ -9,16 +9,21 @@ defmodule PragWeb.PaginateLive do
   def handle_params(params, _url, socket) do
     page = String.to_integer(params["page"] || "1")
     per_page = String.to_integer(params["per_page"] || "5")
-    paginate_options = %{page: page, per_page: per_page}
 
-    donations = Donations.list_donations(paginate: paginate_options)
+    socket = get_items_in_page(socket, page, per_page)
 
-    socket =
-      assign(socket,
-        options: paginate_options,
-        donations: donations
-      )
+    {:noreply, socket}
+  end
 
+  def handle_event("paginate", %{"key" => "ArrowLeft"}, socket) do
+    {:noreply, goto_page(socket, socket.assigns.options.page - 1)}
+  end
+
+  def handle_event("paginate", %{"key" => "ArrowRight"}, socket) do
+    {:noreply, goto_page(socket, socket.assigns.options.page + 1)}
+  end
+
+  def handle_event("paginate", _params, socket) do
     {:noreply, socket}
   end
 
@@ -41,15 +46,39 @@ defmodule PragWeb.PaginateLive do
     # the `page` and `per_page` and store them into `assigns`
     socket =
       push_patch(socket,
-        to: Routes.live_path(
-          socket,
-          __MODULE__,
-          page: socket.assigns.options.page,
-          per_page: per_page
-        )
+        to:
+          Routes.live_path(
+            socket,
+            __MODULE__,
+            page: socket.assigns.options.page,
+            per_page: per_page
+          )
       )
 
     {:noreply, socket}
+  end
+
+  defp goto_page(socket, page) when page > 0 do
+    push_patch(socket,
+      to:
+      Routes.live_path(
+        socket,
+        __MODULE__,
+        page: page,
+        per_page: socket.assigns.options.per_page
+      ))
+  end
+
+  defp goto_page(socket, _page), do: socket
+
+  defp get_items_in_page(socket, page, per_page) do
+    paginate_options = %{page: page, per_page: per_page}
+    donations = Donations.list_donations(paginate: paginate_options)
+
+    assign(socket,
+      options: paginate_options,
+      donations: donations
+    )
   end
 
   defp expires_class(donation) do

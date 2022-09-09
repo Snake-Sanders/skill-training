@@ -10,7 +10,7 @@ defmodule PragWeb.LightLive do
   def render(assigns) do
     ~H"""
     <h1>Front Porch Light</h1>
-    <div id="light">
+    <div id="light" phx-window-keyup="update-brightness">
       <div role="progressbar" class="meter">
         <span style={"width: #{@brightness}%; background-color: #{temp_color(@meter_color)}"} >
           <%= @brightness %>%
@@ -54,6 +54,20 @@ defmodule PragWeb.LightLive do
       </div>
     </div>
     """
+  end
+
+  def handle_event("update-brightness", %{"key" => "ArrowUp"}, socket) do
+    socket = update(socket, :brightness, &min(&1 + 10, 100))
+    {:noreply, socket}
+  end
+
+  def handle_event("update-brightness", %{"key" => "ArrowDown"}, socket) do
+    socket = update(socket, :brightness, &max(&1 - 10, 0))
+    {:noreply, socket}
+  end
+
+  def handle_event("update-brightness", _params, socket) do
+    {:noreply, socket}
   end
 
   def handle_event("on", _, socket) do

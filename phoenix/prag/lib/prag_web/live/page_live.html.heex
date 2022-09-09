@@ -16,6 +16,12 @@
     <h3 class="text-xxl shadow-md text-indigo-700 text-center mt-8 mb-4  font-semibold">Public pages</h3>
 
     <li><p>
+      <%= live_redirect("Desks", to: Routes.live_path(@socket, PragWeb.DesksLive )) %>
+    </p></li>
+    <li><p>
+      <%= live_redirect("key-events", to: Routes.live_path(@socket, PragWeb.KeyEventsLive )) %>
+    </p></li>
+    <li><p>
       <%= live_redirect("Map", to: Routes.live_path(@socket, PragWeb.MapLive )) %>
     </p></li>
     <li><p>
