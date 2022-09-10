@@ -1296,7 +1296,7 @@ li:hover {
   }
 
   input[type="number"] {
-    @apply w-1/4 rounded border border-gray-300 px-3 py-2 text-gray-700 focus: outline-none;
+    @apply w-1/4 rounded border border-gray-300 px-3 py-2 text-gray-700 focus:outline-none;
   }
 
   .status {
@@ -1344,7 +1344,7 @@ li:hover {
       @apply flex items-baseline justify-center space-x-1 my-2 p-4 border-2 border-dashed border-gray-300 rounded-md text-center text-gray-600;
 
       label {
-        @apply cursor-pointer font-medium text-indigo-600 hover: text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500;
+        @apply cursor-pointer font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500;
       }
 
       p {
@@ -1381,7 +1381,7 @@ li:hover {
       }
 
       a {
-        @apply text-3xl font-bold text-gray-700 hover: text-red-700;
+        @apply text-3xl font-bold text-gray-700 hover:text-red-700;
       }
     }
 
@@ -1393,13 +1393,13 @@ li:hover {
   }
 
   #photos {
-    @apply flex flex-wrap items-center justify-center sm: justify-start;
+    @apply flex flex-wrap items-center justify-center sm:justify-start;
 
     .photo {
       @apply text-center p-4 m-4 border-2 border-gray-300 rounded-xl;
 
       img {
-        @apply h-64 sm: h-36 mx-auto object-fill;
+        @apply h-64 sm:h-36 mx-auto object-fill;
       }
 
       .name {
