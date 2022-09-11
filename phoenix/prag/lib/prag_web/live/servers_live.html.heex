@@ -30,8 +30,11 @@
   <div class="main" id="selected-server">
     <div class="wrapper">
       <%= if @live_action == :new do  %>
-        <.live_component module={PragWeb.ServerFormComponent}
-                         id="server-form-comp"/>
+        <%= live_modal(@socket,
+                        PragWeb.ServerFormComponent,
+                        return_to: Routes.live_path(@socket, __MODULE__ ),
+                        title: "Add new server") %>
+
       <% end %>
       <%= if (@live_action != :new) and (not is_nil(@selected_server)) do %>
           <.live_component  module={PragWeb.ServerComponent}

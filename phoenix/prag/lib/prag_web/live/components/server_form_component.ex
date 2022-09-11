@@ -12,6 +12,8 @@ defmodule PragWeb.ServerFormComponent do
   end
 
   def render(assigns) do
+    assigns = assign(assigns, assigns.opts)
+
     ~H"""
     <div>
       <.form let={f} for={@changeset}
@@ -46,7 +48,7 @@ defmodule PragWeb.ServerFormComponent do
 
           <%= submit("Save", phx_disable_with: "Saving...") %>
           <%= live_patch "Cancel",
-            to: Routes.live_path(@socket, PragWeb.ServersLive),
+            to: @return_to,
             class: "cancel"
           %>
       </.form>
@@ -69,14 +71,13 @@ defmodule PragWeb.ServerFormComponent do
     # store it in the DB and append it to the list on the client side.
     # if it fails storing into DB it returns the changeset so the form data is not lost.
     case Servers.create_server(attrs) do
-      {:ok, server} ->
+      {:ok, _server} ->
         socket =
           socket
+          |> IO.inspect(label: "+++")
           # this "redirection" will be handled by handle_param, be sure that matches the right clause.
           # for this we need the name, otherwise will take the default clause where the selected_server is nil.
-          |> push_patch(
-            to: Routes.live_path(socket, PragWeb.ServersLive, id: server.id, name: server.name)
-          )
+          |> push_redirect(to: socket.assigns.opts[:return_to])
 
         {:noreply, socket}
 
