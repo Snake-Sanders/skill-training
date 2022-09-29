@@ -41,16 +41,4 @@ defmodule PragWeb.UnderwaterLive do
     """
   end
 
-  # TODO: move this to helpers
-  def live_modal(_socket, component, opts) do
-    IO.inspect(Keyword.keys(opts))
-
-    live_component(
-      PragWeb.ModalComponent,
-      id: :modal,
-      component: component,
-      return_to: Keyword.fetch!(opts, :return_to),
-      opts: opts
-    )
-  end
 end

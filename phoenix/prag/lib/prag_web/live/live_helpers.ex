@@ -22,6 +22,18 @@ defmodule PragWeb.LiveHelpers do
     assign_new(socket, :current_user, fn -> user end)
   end
 
+  def live_modal(_socket, component, opts) do
+    IO.inspect(Keyword.keys(opts))
+
+    live_component(
+      PragWeb.ModalComponent,
+      id: :modal,
+      component: component,
+      return_to: Keyword.fetch!(opts, :return_to),
+      opts: opts
+    )
+  end
+
   def render(assigns) do
     ~H"""
     """
