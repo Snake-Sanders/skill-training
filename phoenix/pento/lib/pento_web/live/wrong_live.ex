@@ -1,12 +1,16 @@
 defmodule PentoWeb.WrongLive do
-  use Phoenix.LiveView, Layout: {PentoWeb.LayoutView, "live.html"}
+  use Phoenix.LiveView #, Layout: {PentoWeb.LayoutView, "live.html"}
 
   # used by the reder in .link
-  # import Phoenix.Component
+  import Phoenix.Component
 
   def mount(_params, _session, socket) do
     {:ok,
      assign(socket, score: 0, has_won: false, secret: Enum.random(1..10), message: "Make a guess:")}
+  end
+
+  def handle_params(_params, _uri, socket) do
+    {:noreply, assign_new(socket, :secret, fn -> Enum.random(1..10) end)}
   end
 
   def render(assigns) do
@@ -21,7 +25,10 @@ defmodule PentoWeb.WrongLive do
         <% end %>
 
         <%= if @has_won do %>
-        <!-- TODO: <.link patch={Routes.live_path(@socket, PentoWeb.WrongLive)}>Resetart Game</.link> -->
+        <span><%= live_patch "Reset Game", to: Routes.wronglive_path(@socket, :index), class: "button" %></span>
+        <!--
+        <.link patch={Routes.live_path(@socket, PentoWeb.WrongLive)}>Resetart Game</.link>
+        -->
         <% end %>
     </h2>
     """
@@ -36,7 +43,8 @@ defmodule PentoWeb.WrongLive do
         ^number ->
           assign(socket,
             message: "Your guess: #{guess}. Great!",
-            score: socket.assigns.score + 1
+            score: socket.assigns.score + 1,
+            has_won: true
           )
 
         _ ->
