@@ -1,12 +1,25 @@
 defmodule PentoWeb.WrongLive do
-  use Phoenix.LiveView #, Layout: {PentoWeb.LayoutView, "live.html"}
+  use Phoenix.LiveView, Layout: {PentoWeb.LayoutView, "live.html"}
 
   # used by the reder in .link
   import Phoenix.Component
 
-  def mount(_params, _session, socket) do
+  alias Pento.Accounts
+
+  def mount(_params, session, socket) do
+    user =
+      session["user_token"]
+      |> Accounts.get_user_by_session_token()
+
     {:ok,
-     assign(socket, score: 0, has_won: false, secret: Enum.random(1..10), message: "Make a guess:")}
+     assign(socket,
+       score: 0,
+       has_won: false,
+       secret: Enum.random(1..10),
+       message: "Make a guess:",
+       session_id: session["live_socket_id"],
+       current_user: user
+     )}
   end
 
   def handle_params(_params, _uri, socket) do
@@ -30,6 +43,10 @@ defmodule PentoWeb.WrongLive do
         <.link patch={Routes.live_path(@socket, PentoWeb.WrongLive)}>Resetart Game</.link>
         -->
         <% end %>
+        <pre>
+          <%= @current_user.email %>
+          <%= @session_id %>
+        </pre>
     </h2>
     """
   end
