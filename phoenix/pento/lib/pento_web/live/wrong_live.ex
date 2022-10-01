@@ -4,8 +4,6 @@ defmodule PentoWeb.WrongLive do
   # used by the reder in .link
   import Phoenix.Component
 
-  alias Pento.Accounts
-
   def mount(_params, session, socket) do
     {:ok,
      assign(socket,
